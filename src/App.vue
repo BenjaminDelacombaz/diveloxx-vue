@@ -1,6 +1,8 @@
 <template>
     <div class="container mx-auto px-6">
-        <router-view></router-view>
+        <div class="grid place-items-center h-screen">
+            <router-view></router-view>
+        </div>
     </div>
 </template>
 
