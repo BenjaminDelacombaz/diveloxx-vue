@@ -5,11 +5,5 @@
 </template>
 
 <script>
-export default {
-    methods: {
-        test() {
-            this.$router.push('/login')
-        },
-    },
-}
+export default {};
 </script>
