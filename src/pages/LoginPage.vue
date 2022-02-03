@@ -1,6 +1,6 @@
 <template>
     <div class="grid place-items-center h-screen">
-        <div class="card text-center shadow-2xl bg-base-100 w-4/12">
+        <div class="card text-center shadow-2xl bg-base-100">
             <div class="card-body">
                 <h2 class="card-title">Diveloxx</h2>
                 <div class="form-control">
