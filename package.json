@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "daisyui": "^1.25.4",
+    "firebase": "^9.6.5",
     "vue": "^3.2.25",
     "vue-router": "^4.0.12"
   },
