@@ -29,7 +29,7 @@
                     </label>
                 </div>
                 <div class="justify-center card-actions mt-10">
-                    <button class="btn btn-primary w-48" @click="signIn">   
+                    <button class="btn btn-primary w-48" @click="login">   
                         Sign In
                     </button>
                     <button class="btn btn-outline btn-primary w-48">
@@ -43,14 +43,14 @@
 
 <script setup>
     import { ref } from 'vue'
-    import { signInWithEmailAndPassword, getAuth } from 'firebase/auth'
+    import { signIn } from '../services/auth.service.js'
 
     const email = ref('')
     const password = ref('')
 
-    const signIn = async () => {
+    const login = async () => {
         try {
-            let userCredential = await signInWithEmailAndPassword(getAuth(), email.value, password.value)
+            let userCredential = await signIn(email.value, password.value)
             console.log('Successfully logged in!');
             console.log(userCredential)
         } catch (error) {
