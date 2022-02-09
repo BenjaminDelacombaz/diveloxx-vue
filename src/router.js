@@ -6,6 +6,7 @@ import { getCurrentUser } from './services/auth.service'
 const routes = [
     {
         path: '/',
+        name: 'Home',
         component: HomePage,
         meta: {
             requiresAuth: true,
