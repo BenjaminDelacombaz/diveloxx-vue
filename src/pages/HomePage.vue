@@ -46,4 +46,9 @@ import {
     ClockIcon,
     UsersIcon,
 } from "@heroicons/vue/outline";
+import { dives } from '../data/example_data'
+
+console.log(new Date(Math.max(...dives.map(e => new Date(e.date)))))
+
+// const lastDive = dives.
 </script>
