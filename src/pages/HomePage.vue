@@ -45,7 +45,6 @@ import {
     ArrowCircleDownIcon,
     ClockIcon,
     UsersIcon,
-    CalendarIcon,
 } from "@heroicons/vue/outline"
 import { dives } from '../data/example_data'
 
