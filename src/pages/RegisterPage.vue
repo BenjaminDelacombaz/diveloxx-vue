@@ -1,6 +1,6 @@
 <template>
     <div class="card text-center shadow-2xl bg-base-100">
-        <div class="card-body">
+        <div class="card-body items-center text-center">
             <h2 class="card-title">Diveloxx</h2>
             <form v-on:submit.prevent="register">
                 <div class="form-control">
