@@ -2,6 +2,12 @@
     <div class="card text-center shadow-2xl bg-base-100">
         <div class="card-body items-center text-center">
             <h2 class="card-title">Diveloxx</h2>
+            <div class="alert shadow-lg alert-error" v-if="error">
+                <div>
+                    <XCircleIcon class="h-6 w-6" />
+                    <span>{{ getMessageFromCode(error.code) }}</span>
+                </div>
+            </div>
             <form v-on:submit.prevent="register">
                 <div class="form-control">
                     <label class="label">
@@ -87,12 +93,14 @@
 </template>
 
 <script setup>
-    import { reactive, toRef } from 'vue'
+    import { reactive, toRef, ref } from 'vue'
     import useVuelidate from '@vuelidate/core'
     import { required, email, sameAs, minLength } from '@vuelidate/validators'
     import { containsLowercaseLetter, containsUppercaseLetter, containsDigit, containsSpecialChar } from '../tools/validators'
     import { createUser } from '../services/auth.service.js'
     import { useRouter } from 'vue-router'
+    import { getMessageFromCode } from '../tools/errors'
+    import { XCircleIcon } from "@heroicons/vue/outline"
 
     const router = useRouter()
     const state = reactive({
@@ -115,15 +123,15 @@
         confirmPassword: { required, sameAs: sameAs(toRef(state, 'password')) },
     }
     const validation = useVuelidate(rules, state, { $autoDirty: true })
+    const error = ref(null)
     const register = async () => {
         let isFormValid = await validation.value.$validate()
         if (isFormValid) {
             try {
                 await createUser(state.email, state.password)
                 router.push({ name: 'Home' })
-            } catch (error) {
-                console.log(error.code)
-                alert(error.message)
+            } catch (e) {
+                error.value = e
             }
         }
     }

@@ -2,6 +2,12 @@
     <div class="card text-center shadow-2xl bg-base-100">
         <div class="card-body items-center text-center">
             <h2 class="card-title">Diveloxx</h2>
+            <div class="alert shadow-lg alert-error" v-if="error">
+                <div>
+                    <XCircleIcon class="h-6 w-6" />
+                    <span>{{ getMessageFromCode(error.code) }}</span>
+                </div>
+            </div>
             <form v-on:submit.prevent="login">
                 <div class="form-control">
                     <label class="label">
@@ -47,18 +53,20 @@
     import { ref } from 'vue'
     import { signIn } from '../services/auth.service.js'
     import { useRouter } from 'vue-router'
+    import { XCircleIcon } from "@heroicons/vue/outline"
+    import { getMessageFromCode } from '../tools/errors'
 
     const router = useRouter()
     const email = ref('')
     const password = ref('')
+    const error = ref(null)
 
     const login = async () => {
         try {
-            let userCredential = await signIn(email.value, password.value)
+            await signIn(email.value, password.value)
             router.push({ name: 'Home' })
-        } catch (error) {
-            console.log(error.code)
-            alert(error.message);
+        } catch (e) {
+            error.value = e
         }   
     }
 </script>
