@@ -2,6 +2,7 @@ import * as VueRouter from 'vue-router'
 import LoginPage from './pages/LoginPage.vue'
 import HomePage from './pages/HomePage.vue'
 import RegisterPage from './pages/RegisterPage.vue'
+import PathNotFoundPage from './pages/PathNotFoundPage.vue'
 import { getCurrentUser } from './services/auth.service'
 
 const routes = [
@@ -25,6 +26,14 @@ const routes = [
         path: '/register',
         name: 'Register',
         component: RegisterPage,
+        meta: {
+            withoutBase: true,
+        }
+    },
+    // Always last
+    {
+        path: '/:pathMatch(.*)*',
+        component: PathNotFoundPage,
         meta: {
             withoutBase: true,
         }
