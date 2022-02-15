@@ -1,6 +1,7 @@
 import * as VueRouter from 'vue-router'
 import LoginPage from './pages/LoginPage.vue'
 import HomePage from './pages/HomePage.vue'
+import RegisterPage from './pages/RegisterPage.vue'
 import { getCurrentUser } from './services/auth.service'
 
 const routes = [
@@ -16,6 +17,14 @@ const routes = [
         path: '/login',
         name: 'Login',
         component: LoginPage,
+        meta: {
+            withoutBase: true,
+        }
+    },
+    {
+        path: '/register',
+        name: 'Register',
+        component: RegisterPage,
         meta: {
             withoutBase: true,
         }
