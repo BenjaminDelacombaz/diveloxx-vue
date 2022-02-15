@@ -1,4 +1,4 @@
-import { onAuthStateChanged, getAuth, signInWithEmailAndPassword, signOut as fireSignOut } from 'firebase/auth'
+import { onAuthStateChanged, getAuth, signInWithEmailAndPassword, signOut as fireSignOut, createUserWithEmailAndPassword } from 'firebase/auth'
 
 const getCurrentUser = () => {
     return new Promise((resolve, reject) => {
@@ -17,4 +17,8 @@ const signOut = () => {
     return fireSignOut(getAuth())
 }
 
-export { getCurrentUser, signIn, signOut }
+const createUser = (email, password) => {
+    return createUserWithEmailAndPassword(getAuth(), email, password)
+}
+
+export { getCurrentUser, signIn, signOut, createUser }
