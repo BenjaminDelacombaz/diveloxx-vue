@@ -32,9 +32,11 @@
                     <button class="btn btn-primary w-48">   
                         Sign In
                     </button>
-                    <button class="btn btn-outline btn-primary w-48">
-                        Create an account
-                    </button>
+                    <router-link to="/register" custom v-slot="{ navigate, href }">
+                        <a class="btn btn-outline btn-primary w-48" :href="href" @click="navigate">
+                            Create an account
+                        </a>
+                    </router-link>
                 </div>
             </form>
         </div>
