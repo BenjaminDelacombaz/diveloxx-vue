@@ -8,7 +8,9 @@
   },
   "dependencies": {
     "@heroicons/vue": "^1.0.5",
-    "daisyui": "^1.25.4",
+    "@vuelidate/core": "^2.0.0-alpha.34",
+    "@vuelidate/validators": "^2.0.0-alpha.26",
+    "daisyui": "^2.0.2",
     "firebase": "^9.6.5",
     "vue": "^3.2.25",
     "vue-router": "^4.0.12"
