@@ -21,14 +21,17 @@
             </a>
         </div>
         <div class="flex-none">
-            <div v-if="currentUser" class="dropdown dropdown-end">
+            <div v-if="user" class="dropdown dropdown-end">
                 <div tabindex="0" class="btn btn-square btn-ghost">
                     <UserIcon class="h-6 w-6" />
                 </div> 
                 <ul tabindex="0" class="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52 border-2">
                     <li class="menu-title">
-                        <span>{{ currentUser.email }}</span>
-                    </li> 
+                        <span>{{ user.email }}</span>
+                    </li>
+                    <li>
+                        <router-link to="/profile" >My profile</router-link>
+                    </li>
                     <li>
                         <a @click="logout()">Sign out</a>
                     </li>
@@ -39,36 +42,34 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { MenuIcon, UserIcon } from "@heroicons/vue/solid"
-import { getCurrentUser, signOut } from '../../services/auth.service'
-import { useRouter } from 'vue-router'
+    import { inject } from 'vue'
+    import { MenuIcon, UserIcon } from "@heroicons/vue/solid"
+    import { signOut } from '../../services/auth.service'
+    import { useRouter } from 'vue-router'
 
-const currentUser = ref(null)
-const router = useRouter()
-const links = [
-    {
-        name: 'Dives',
-        href: '#',
-    },
-    {
-        name: 'Dive sites',
-        href: '#',
-    },
-    {
-        name: 'Buddies',
-        href: '#',
-    },
-    {
-        name: 'Stats',
-        href: '#',
-    },
-]
+    const user = inject('user')
+    const router = useRouter()
+    const links = [
+        {
+            name: 'Dives',
+            href: '#',
+        },
+        {
+            name: 'Dive sites',
+            href: '#',
+        },
+        {
+            name: 'Buddies',
+            href: '#',
+        },
+        {
+            name: 'Stats',
+            href: '#',
+        },
+    ]
 
-const logout = async () => {
-    await signOut()
-    router.push({ name: 'Login' })
-}
-
-getCurrentUser().then(user => currentUser.value = user)
+    const logout = async () => {
+        await signOut()
+        router.push({ name: 'Login' })
+    }
 </script>
