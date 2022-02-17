@@ -6,31 +6,42 @@
                     {{ profile.fullname }}
                 </h2>
                 <div>{{ user.email }}</div>
-            </div>
-        </div>
-                <div class="shadow-2xl stats">
-                    <div class="stat place-items-center">
-                        <div class="stat-title">Dives count</div>
-                        <div class="stat-value">{{ dives.length }}</div>
-                    </div>
-                    <div class="stat place-items-center">
-                        <div class="stat-title">Average dives by years</div>
-                        <div class="stat-value">{{ dives.length / Object.keys(divesGroupedByYears).length }}</div>
-                    </div>
-                    <div class="stat place-items-center">
-                        <div class="stat-title">Dives this year</div>
-                        <div class="stat-value">{{ divesGroupedByYears[(new Date()).getFullYear()]?.length ?? 0 }}</div>
-                    </div>
+                <div class="justify-center card-actions mt-10">
+                    <label for="edit-profile-modal" class="btn btn-outline btn-primary mt-6">
+                        Edit my profile
+                    </label>
+                    <button class="btn btn-outline btn-primary mt-6" @click="changeEmail">
+                        Change my email
+                    </button>
                 </div>
             </div>
+        </div>
+        <div class="shadow-2xl stats">
+            <div class="stat place-items-center">
+                <div class="stat-title">Dives count</div>
+                <div class="stat-value">{{ dives.length }}</div>
+            </div>
+            <div class="stat place-items-center">
+                <div class="stat-title">Average dives by years</div>
+                <div class="stat-value">{{ dives.length / Object.keys(divesGroupedByYears).length }}</div>
+            </div>
+            <div class="stat place-items-center">
+                <div class="stat-title">Dives this year</div>
+                <div class="stat-value">{{ divesGroupedByYears[(new Date()).getFullYear()]?.length ?? 0 }}</div>
+            </div>
+        </div>
+    </div>
+    <EditProfileModal uid="edit-profile-modal" />
 </template>
 
 <script setup>
     import { inject } from 'vue'
     import { dives } from '../../data/example_data'
     import { getDivesGroupedPerYear } from '../../services/dive.service'
+    import EditProfileModal from '../../components/profile/EditProfileModal.vue'
 
     const user = inject('user')
     const profile = inject('profile')
     const divesGroupedByYears = getDivesGroupedPerYear(dives)
+    const changeEmail = () => console.log('Change email')
 </script>
