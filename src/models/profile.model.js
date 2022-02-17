@@ -5,4 +5,7 @@ export class Profile {
         this.firstname = firstname
         this.lastname = lastname
     }
+    get fullname() {
+        return `${this.firstname} ${this.lastname}`
+    }
 }
