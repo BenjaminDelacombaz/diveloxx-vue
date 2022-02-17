@@ -36,7 +36,6 @@ const routes = [
         component: ProfilePage,
         meta: {
             requiresAuth: true,
-            requiresProfile: true,
         }
     },
     // Always last
@@ -64,7 +63,7 @@ const initGuard = (router, user, profile) => {
         }
         else {
             if (requiresProfile && !profile.value) {
-                next({ name: 'EditProfile' })
+                next({ name: 'Profile' })
             } else {
                 next()
             }
