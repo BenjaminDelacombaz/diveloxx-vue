@@ -4,6 +4,7 @@ import HomePage from './pages/HomePage.vue'
 import RegisterPage from './pages/RegisterPage.vue'
 import PathNotFoundPage from './pages/PathNotFoundPage.vue'
 import ProfilePage from './pages/profile/ProfilePage.vue'
+import SignOutPage from './pages/SignOutPage.vue'
 
 const routes = [
     {
@@ -27,6 +28,15 @@ const routes = [
         name: 'Register',
         component: RegisterPage,
         meta: {
+            withoutBase: true,
+        }
+    },
+    {
+        path: '/sign-out',
+        name: 'SignOut',
+        component: SignOutPage,
+        meta: {
+            requiresAuth: true,
             withoutBase: true,
         }
     },

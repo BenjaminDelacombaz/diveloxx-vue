@@ -73,9 +73,6 @@
     ]
 
     const logout = async () => {
-        await signOut()
-        user.value = null
-        profile.value = null
-        router.push({ name: 'Login' })
+        router.push({ name: 'SignOut' })
     }
 </script>
