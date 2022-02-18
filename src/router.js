@@ -5,6 +5,7 @@ import RegisterPage from './pages/RegisterPage.vue'
 import PathNotFoundPage from './pages/PathNotFoundPage.vue'
 import ProfilePage from './pages/profile/ProfilePage.vue'
 import SignOutPage from './pages/SignOutPage.vue'
+import DiveSitesPage from './pages/DiveSitesPage.vue'
 
 const routes = [
     {
@@ -46,6 +47,15 @@ const routes = [
         component: ProfilePage,
         meta: {
             requiresAuth: true,
+        }
+    },
+    {
+        path: '/dive-sites',
+        name: 'DiveSites',
+        component: DiveSitesPage,
+        meta: {
+            requiresAuth: true,
+            requiresProfile: true,
         }
     },
     // Always last
