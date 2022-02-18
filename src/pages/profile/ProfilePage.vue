@@ -10,9 +10,6 @@
                     <label for="edit-profile-modal" class="btn btn-outline btn-primary mt-6">
                         Edit my profile
                     </label>
-                    <button class="btn btn-outline btn-primary mt-6" @click="changeEmail">
-                        Change my email
-                    </button>
                 </div>
             </div>
         </div>
