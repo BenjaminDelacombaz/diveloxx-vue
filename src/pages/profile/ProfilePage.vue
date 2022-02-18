@@ -3,7 +3,7 @@
         <div class="card shadow-2xl">
             <div class="card-body items-center center-text">
                 <h2 class="card-title">
-                    {{ profile.fullname }}
+                    {{ profile?.fullname ?? 'No profile? create one' }}
                 </h2>
                 <div>{{ user.email }}</div>
                 <div class="justify-center card-actions mt-10">
