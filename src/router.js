@@ -3,7 +3,8 @@ import LoginPage from './pages/LoginPage.vue'
 import HomePage from './pages/HomePage.vue'
 import RegisterPage from './pages/RegisterPage.vue'
 import PathNotFoundPage from './pages/PathNotFoundPage.vue'
-import { getCurrentUser } from './services/auth.service'
+import ProfilePage from './pages/profile/ProfilePage.vue'
+import SignOutPage from './pages/SignOutPage.vue'
 
 const routes = [
     {
@@ -30,6 +31,23 @@ const routes = [
             withoutBase: true,
         }
     },
+    {
+        path: '/sign-out',
+        name: 'SignOut',
+        component: SignOutPage,
+        meta: {
+            requiresAuth: true,
+            withoutBase: true,
+        }
+    },
+    {
+        path: '/profile',
+        name: 'Profile',
+        component: ProfilePage,
+        meta: {
+            requiresAuth: true,
+        }
+    },
     // Always last
     {
         path: '/:pathMatch(.*)*',
@@ -45,15 +63,20 @@ let router = VueRouter.createRouter({
     routes,
 })
 
-const initGuard = (router) => {
+const initGuard = (router, user, profile) => {
     router.beforeEach(async (to, from, next) => {
         const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+        const requiresProfile = to.matched.some(record => record.meta.requiresProfile);
 
-        if (requiresAuth && !await getCurrentUser()) {
+        if (requiresAuth && !user.value) {
             next({ name: 'Login' })
         }
         else {
-            next()
+            if (requiresProfile && !profile.value) {
+                next({ name: 'Profile' })
+            } else {
+                next()
+            }
         }
     })
 }

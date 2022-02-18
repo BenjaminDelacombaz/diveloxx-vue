@@ -50,20 +50,25 @@
 </template>
 
 <script setup>
-    import { ref } from 'vue'
-    import { signIn } from '../services/auth.service.js'
+    import { ref, inject } from 'vue'
+    import { getCurrentUser, signIn } from '../services/auth.service.js'
     import { useRouter } from 'vue-router'
     import { XCircleIcon } from "@heroicons/vue/outline"
     import { getMessageFromCode } from '../tools/errors'
+    import { getProfile } from '../services/profile.service.js'
 
     const router = useRouter()
     const email = ref('')
     const password = ref('')
     const error = ref(null)
+    const user = inject('user')
+    const profile = inject('profile')
 
     const login = async () => {
         try {
             await signIn(email.value, password.value)
+            user.value = await getCurrentUser()
+            profile.value = await getProfile(user.value.uid)
             router.push({ name: 'Home' })
         } catch (e) {
             error.value = e
