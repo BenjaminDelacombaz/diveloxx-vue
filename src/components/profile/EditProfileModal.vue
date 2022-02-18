@@ -58,8 +58,9 @@
     import { reactive, ref, inject, toRaw } from 'vue'
     import useVuelidate from '@vuelidate/core'
     import { required, minLength, maxLength } from '@vuelidate/validators'
-    import { updateProfile } from '../../services/profile.service';
+    import { updateProfile, createProfile } from '../../services/profile.service';
     import { XCircleIcon } from "@heroicons/vue/outline"
+    import { Profile } from '../../models/profile.model';
 
     const props = defineProps({
         uid: String,
@@ -81,9 +82,14 @@
     const save = async () => {
         if (await validation.value.$validate()) {
             try {
-                await updateProfile(user.value.uid, toRaw(state))
-                profile.value.firstname = state.firstname
-                profile.value.lastname = state.lastname
+                if (profile.value) {
+                    await updateProfile(user.value.uid, toRaw(state))
+                    profile.value.firstname = state.firstname
+                    profile.value.lastname = state.lastname
+                } else {
+                    await createProfile(user.value.uid, toRaw(state))
+                    profile.value = new Profile(state.firstname, state.lastname)
+                }
                 emit('profile-updated')
                 isOpen.value = false
             } catch (e) {
