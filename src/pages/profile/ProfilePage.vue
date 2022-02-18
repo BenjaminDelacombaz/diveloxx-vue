@@ -6,8 +6,8 @@
                     {{ profile?.fullname ?? 'No profile? create one' }}
                 </h2>
                 <div>{{ user.email }}</div>
-                <div class="justify-center card-actions mt-10">
-                    <label for="edit-profile-modal" class="btn btn-outline btn-primary mt-6">
+                <div class="justify-center card-actions mt-4">
+                    <label for="edit-profile-modal" class="btn btn-outline btn-primary">
                         Edit my profile
                     </label>
                 </div>
