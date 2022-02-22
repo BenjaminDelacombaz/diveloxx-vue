@@ -1,5 +1,14 @@
 <template>
-    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div class="alert shadow-lg alert-error" v-if="error">
+        <div>
+            <XCircleIcon class="h-6 w-6" />
+            <span>{{ error }}</span>
+        </div>
+    </div>
+    <div class="center-items">
+        <Loader v-if="isLoading" />
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4" v-if="!error || isLoading">
         <div class="card shadow-2xl" v-for="diveSite in diveSites" :key="diveSite.id">
             <div class="card-body items-center text-center">
                 <h2 class="card-title">{{ diveSite.name }}</h2>
@@ -13,12 +22,22 @@
     </div>
 </template>
 <script setup>
-import { onMounted, reactive } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import { getDiveSites } from '../services/dive_site.service'
+import { XCircleIcon } from "@heroicons/vue/outline"
+import Loader from "../components/layout/Loader.vue"
 
 const diveSites = reactive([])
+const error = ref(null)
+const isLoading = ref(true)
 
 onMounted(async () => {
-    diveSites.push(...(await getDiveSites()))
+    try {
+        diveSites.push(...(await getDiveSites()))
+    } catch(e) {
+        console.error(e)
+        error.value = 'An error occurred while retrieving the dive sites'
+    }
+    isLoading.value = false
 })
 </script>
