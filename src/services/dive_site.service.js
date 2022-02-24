@@ -14,7 +14,6 @@ const getDiveSites = async () => {
             doc.id,
             doc.data().name,
             doc.data().description,
-            doc.data().location,
             doc.data().country_code,
             doc.data().owner_id,
         )
