@@ -18,7 +18,7 @@
             <div class="card shadow-2xl" v-for="diveSite in diveSites" :key="diveSite.id">
                 <div class="card-body items-center text-center">
                     <h2 class="card-title">{{ diveSite.name }}</h2>
-                    <p class="text-sm text-gray-400">{{ diveSite.country ?? diveSite.country_code }}</p>
+                    <p class="text-sm text-gray-400">{{ diveSite.location }} ({{ diveSite.country ?? diveSite.country_code }})</p>
                     <p>{{ diveSite.description }}</p>
                 </div>
                 <div class="text-right mb-2 mr-6 text-sm text-gray-400">

@@ -46,6 +46,24 @@
                         </span>
                     </label>
                 </div>
+                <!-- Location -->
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text"></span>
+                    </label>
+                    <input
+                        type="text"
+                        placeholder="Location"
+                        v-model="state.location"
+                        class="input input-bordered"
+                        :class="{ 'input-error': validation.location.$error }"
+                    />
+                    <label class="label" v-for="error of validation.location.$errors" :key="error.$uid">
+                        <span class="label-text-alt">
+                            {{ error.$message }}
+                        </span>
+                    </label>
+                </div>
                 <!-- Country -->
                 <div class="form-control">
                     <label class="label">
@@ -82,11 +100,13 @@
     const state = reactive({
         name: props.diveSite?.name ?? '',
         description: props.diveSite?.description ?? '',
+        location: props.diveSite?.location ?? '',
         country_code: props.diveSite?.country_code ?? 'ch',
     })
     const rules = {
         name: { required, minLength: minLength(2), maxLength: maxLength(20) },
         description: { required, minLength: minLength(2) },
+        location: { required, minLength: minLength(2), maxLength: maxLength(20) },
         country_code: { required, minLength: minLength(2), maxLength: maxLength(2) },
     }
     const validation = useVuelidate(rules, state, { $autoDirty: true })
@@ -104,7 +124,14 @@
                         ...toRaw(state),
                         owner_id: user.value.uid
                     })
-                    let diveSite = new DiveSite(createdDiveSite.id, state.name, state.description, state.country_code, user.value.uid)
+                    let diveSite = new DiveSite(
+                        createdDiveSite.id,
+                        state.name,
+                        state.description,
+                        state.location,
+                        state.country_code,
+                        user.value.uid
+                    )
                     diveSite.owner = profile.value 
                     emit('dive-site-added', diveSite)
                 }
