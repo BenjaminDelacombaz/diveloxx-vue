@@ -88,20 +88,20 @@
     import { XCircleIcon } from "@heroicons/vue/outline"
     import { DiveSite } from '../../models/dive_site.model'
     import * as countries from '../../data/countries.json'
-    import { createDiveSite } from '../../services/dive_site.service'
+    import { createDiveSite, updateDiveSite } from '../../services/dive_site.service'
 
     const props = defineProps({
         uid: String,
-        diveSite: DiveSite,
     })
-    const emit = defineEmits(['dive-site-added'])
+    const emit = defineEmits(['dive-site-added', 'dive-site-updated'])
     const profile = inject('profile')
     const user = inject('user')
+    const diveSite = ref(null)
     const state = reactive({
-        name: props.diveSite?.name ?? '',
-        description: props.diveSite?.description ?? '',
-        location: props.diveSite?.location ?? '',
-        country_code: props.diveSite?.country_code ?? 'ch',
+        name: diveSite.value?.name ?? '',
+        description: diveSite.value?.description ?? '',
+        location: diveSite.value?.location ?? '',
+        country_code: diveSite.value?.country_code ?? 'ch',
     })
     const rules = {
         name: { required, minLength: minLength(2), maxLength: maxLength(20) },
@@ -112,13 +112,25 @@
     const validation = useVuelidate(rules, state, { $autoDirty: true })
     const error = ref(null)
     const isOpen = ref(false)
+    const open = (diveSiteParam) => {
+        diveSite.value = diveSiteParam
+        state.name = diveSite.value?.name ?? ''
+        state.description = diveSite.value?.description ?? ''
+        state.location = diveSite.value?.location ?? ''
+        state.country_code = diveSite.value?.country_code ?? 'ch'
+        isOpen.value = true
+    }
     const save = async () => {
         if (await validation.value.$validate()) {
             try {
-                if (props.diveSite) {
-                    /*await updateProfile(user.value.uid, toRaw(state))
-                    profile.value.firstname = state.firstname
-                    profile.value.lastname = state.lastname*/
+                if (diveSite.value) {
+                    await updateDiveSite(diveSite.value.id, toRaw(state))
+                    diveSite.value.name = state.name
+                    diveSite.value.description = state.description
+                    diveSite.value.location = state.location
+                    diveSite.value.country_code = state.country_code
+                    diveSite.value.refreshCountry()
+                    emit('dive-site-updated', diveSite.value)
                 } else {
                     let createdDiveSite = await createDiveSite({
                         ...toRaw(state),
@@ -132,8 +144,8 @@
                         state.country_code,
                         user.value.uid
                     )
-                    diveSite.owner = profile.value 
-                    emit('dive-site-added', diveSite)
+                    diveSite.value.owner = profile.value 
+                    emit('dive-site-added', diveSite.value)
                 }
                 isOpen.value = false
             } catch (e) {
@@ -142,4 +154,7 @@
             }
         }
     }
+    defineExpose({
+        open,  
+    })
 </script>

@@ -1,4 +1,4 @@
-import { collection, query, where, getDocs, getFirestore, addDoc } from "firebase/firestore"
+import { collection, getDocs, getFirestore, addDoc, updateDoc, doc } from "firebase/firestore"
 import { DiveSite } from "../models/dive_site.model";
 import { getProfilesById } from "./profile.service";
 
@@ -32,5 +32,6 @@ const getDiveSites = async () => {
 }
 
 const createDiveSite = (diveSiteAttr) => addDoc(collection(getFirestore(), colName), diveSiteAttr)
+const updateDiveSite = (id, diveSiteAttr) => updateDoc(doc(getFirestore(), colName, id), diveSiteAttr)
 
-export { getDiveSites, createDiveSite }
+export { getDiveSites, createDiveSite, updateDiveSite }

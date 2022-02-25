@@ -21,12 +21,21 @@
                     <p class="text-sm text-gray-400">{{ diveSite.location }} ({{ diveSite.country ?? diveSite.country_code }})</p>
                     <p>{{ diveSite.description }}</p>
                 </div>
-                <div class="text-right mb-2 mr-6 text-sm text-gray-400">
-                    <p>Owned by {{ diveSite.owner?.anonymizedName ?? 'Unknown' }}</p> 
+                <div class="flex mb-2 mx-4 items-end">
+                    <div class="flex-none">
+                        <button class="btn btn-sm btn-square btn-primary mr-1" @click="editDiveSite(diveSite)">
+                            <PencilIcon class="h-5 w-5" />
+                        </button>
+                        <button class="btn btn-sm btn-square btn-primary btn-outline">
+                            <TrashIcon class="h-5 w-5" />
+                        </button>
+                    </div>
+                    <p class="text-right text-sm text-gray-400 flex-grow">Owned by {{ diveSite.owner?.anonymizedName ?? 'Unknown' }}</p>
                 </div>
             </div>
         </div>
-        <EditDiveSiteModal 
+        <EditDiveSiteModal
+            ref="editDiveSiteModal"
             uid="edit-dive-site-modal"
             v-on:dive-site-added="diveSiteAdded"
         />
@@ -35,13 +44,14 @@
 <script setup>
 import { onMounted, reactive, ref } from 'vue';
 import { getDiveSites } from '../services/dive_site.service'
-import { XCircleIcon } from "@heroicons/vue/outline"
+import { XCircleIcon, PencilIcon, TrashIcon } from "@heroicons/vue/outline"
 import Loader from "../components/layout/Loader.vue"
 import EditDiveSiteModal from '../components/dive_site/EditDiveSiteModal.vue';
 
 const diveSites = reactive([])
 const error = ref(null)
 const isLoading = ref(true)
+const editDiveSiteModal = ref(null)
 
 onMounted(async () => {
     try {
@@ -54,4 +64,5 @@ onMounted(async () => {
 })
 
 const diveSiteAdded = (diveSite) => diveSites.push(diveSite)
+const editDiveSite = (diveSite) => editDiveSiteModal.value.open(diveSite)
 </script>
