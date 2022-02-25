@@ -82,7 +82,7 @@
     </div>
 </template>
 <script setup>
-    import { reactive, ref, inject, toRaw } from 'vue'
+    import { reactive, ref, inject, toRaw, watch } from 'vue'
     import useVuelidate from '@vuelidate/core'
     import { required, minLength, maxLength } from '@vuelidate/validators'
     import { XCircleIcon } from "@heroicons/vue/outline"
@@ -98,10 +98,10 @@
     const user = inject('user')
     const diveSite = ref(null)
     const state = reactive({
-        name: diveSite.value?.name ?? '',
-        description: diveSite.value?.description ?? '',
-        location: diveSite.value?.location ?? '',
-        country_code: diveSite.value?.country_code ?? 'ch',
+        name: '',
+        description: '',
+        location: '',
+        country_code: '',
     })
     const rules = {
         name: { required, minLength: minLength(2), maxLength: maxLength(20) },
@@ -112,12 +112,14 @@
     const validation = useVuelidate(rules, state, { $autoDirty: true })
     const error = ref(null)
     const isOpen = ref(false)
-    const open = (diveSiteParam) => {
-        diveSite.value = diveSiteParam
+    const initState = () => {
         state.name = diveSite.value?.name ?? ''
         state.description = diveSite.value?.description ?? ''
         state.location = diveSite.value?.location ?? ''
         state.country_code = diveSite.value?.country_code ?? 'ch'
+    }
+    const open = (diveSiteParam) => {
+        diveSite.value = diveSiteParam
         isOpen.value = true
     }
     const save = async () => {
@@ -125,28 +127,22 @@
             try {
                 if (diveSite.value) {
                     await updateDiveSite(diveSite.value.id, toRaw(state))
-                    diveSite.value.name = state.name
-                    diveSite.value.description = state.description
-                    diveSite.value.location = state.location
-                    diveSite.value.country_code = state.country_code
-                    diveSite.value.refreshCountry()
+                    diveSite.value.updateFromFormState(state)
                     emit('dive-site-updated', diveSite.value)
                 } else {
                     let createdDiveSite = await createDiveSite({
                         ...toRaw(state),
                         owner_id: user.value.uid
                     })
-                    let diveSite = new DiveSite(
+                    diveSite.value = DiveSite.fromFormState(
                         createdDiveSite.id,
-                        state.name,
-                        state.description,
-                        state.location,
-                        state.country_code,
-                        user.value.uid
+                        user.value.uid,
+                        state
                     )
                     diveSite.value.owner = profile.value 
                     emit('dive-site-added', diveSite.value)
                 }
+                diveSite.value = null
                 isOpen.value = false
             } catch (e) {
                 console.error(e)
@@ -156,5 +152,10 @@
     }
     defineExpose({
         open,  
+    })
+    watch(isOpen, (val) => {
+        if (!val) diveSite.value = null
+        initState()
+        validation.value.$reset()
     })
 </script>
