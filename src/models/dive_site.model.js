@@ -17,6 +17,10 @@ export class DiveSite {
         this.location = location
         this.country_code = country_code
         this.owner_id = owner_id
-        this.country = countries.default.find((country) => country.alpha2 == country_code)?.en ?? null
+        this.refreshCountry()
+    }
+
+    refreshCountry() {
+        this.country = countries.default.find((country) => country.alpha2 == this.country_code)?.en ?? null
     }
 }
