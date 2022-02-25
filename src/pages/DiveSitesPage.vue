@@ -23,10 +23,10 @@
                 </div>
                 <div class="flex mb-2 mx-4 items-end">
                     <div class="flex-none">
-                        <button class="btn btn-sm btn-square btn-primary mr-1" @click="editDiveSite(diveSite)">
+                        <button v-if="diveSite.canEdit(user.uid)" class="btn btn-sm btn-square btn-primary mr-1" @click="editDiveSite(diveSite)">
                             <PencilIcon class="h-5 w-5" />
                         </button>
-                        <button class="btn btn-sm btn-square btn-primary btn-outline">
+                        <button v-if="diveSite.canDelete(user.uid)" class="btn btn-sm btn-square btn-primary btn-outline" @click="openDeleteDiveSiteModal(diveSite)">
                             <TrashIcon class="h-5 w-5" />
                         </button>
                     </div>
@@ -39,19 +39,29 @@
             uid="edit-dive-site-modal"
             v-on:dive-site-added="diveSiteAdded"
         />
+        <DeleteModal
+            ref="deleteDiveSiteModal"
+            uid="delete-dive-site-modal"
+            base-title="Remove a dive site"
+            v-on:delete-element="doDeleteDiveSite"
+        />
     </div>
 </template>
 <script setup>
-import { onMounted, reactive, ref } from 'vue';
+import { inject, onMounted, reactive, ref } from 'vue';
 import { getDiveSites } from '../services/dive_site.service'
 import { XCircleIcon, PencilIcon, TrashIcon } from "@heroicons/vue/outline"
 import Loader from "../components/layout/Loader.vue"
-import EditDiveSiteModal from '../components/dive_site/EditDiveSiteModal.vue';
+import EditDiveSiteModal from '../components/dive_site/EditDiveSiteModal.vue'
+import DeleteModal from '../components/DeleteModal.vue'
+import { deleteDiveSite } from '../services/dive_site.service'
 
+const user = inject('user')
 const diveSites = reactive([])
 const error = ref(null)
 const isLoading = ref(true)
 const editDiveSiteModal = ref(null)
+const deleteDiveSiteModal = ref(null)
 
 onMounted(async () => {
     try {
@@ -65,4 +75,17 @@ onMounted(async () => {
 
 const diveSiteAdded = (diveSite) => diveSites.push(diveSite)
 const editDiveSite = (diveSite) => editDiveSiteModal.value.open(diveSite)
+const openDeleteDiveSiteModal = (diveSite) => deleteDiveSiteModal.value.open(diveSite, `Delete ${diveSite.name} dive site`)
+const doDeleteDiveSite = async (diveSite) => {
+    try {
+        await deleteDiveSite(diveSite.id)
+        let i = diveSites.indexOf(diveSite)
+        if (i >= 0) {
+            diveSites.splice(i, 1)
+        }
+    } catch (e) {
+        console.error(e)
+        error.value = 'An error occurred while deleting the dive site'
+    }
+}
 </script>
