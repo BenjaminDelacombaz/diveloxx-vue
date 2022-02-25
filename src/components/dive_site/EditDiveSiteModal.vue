@@ -2,7 +2,7 @@
     <input type="checkbox" :id="uid" class="modal-toggle" v-model="isOpen">
     <div class="modal">
         <div class="modal-box">
-            <h3 class="font-bold text-lg">Edit my profile</h3>
+            <h3 class="font-bold text-lg">Edit a dive site</h3>
             <div class="alert shadow-lg alert-error" v-if="error">
                 <div>
                     <XCircleIcon class="h-6 w-6" />
