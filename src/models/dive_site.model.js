@@ -20,6 +20,10 @@ export class DiveSite {
         this.refreshCountry()
     }
 
+    static fromFormState(id, ownerId, state) {
+        return new DiveSite(id, state.name, state.description, state.location, state.country_code, ownerId)
+    }
+
     refreshCountry() {
         this.country = countries.default.find((country) => country.alpha2 == this.country_code)?.en ?? null
     }
