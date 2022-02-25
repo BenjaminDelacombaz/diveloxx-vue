@@ -35,4 +35,12 @@ export class DiveSite {
     refreshCountry() {
         this.country = countries.default.find((country) => country.alpha2 == this.country_code)?.en ?? null
     }
+
+    canEdit(uid) {
+        return uid == this.owner_id 
+    }
+
+    canDelete(uid) {
+        return this.canEdit(uid)
+    }
 }
