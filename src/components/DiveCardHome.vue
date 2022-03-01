@@ -14,7 +14,7 @@
                 </div>
                 <div class="flex">
                     <UsersIcon class="w-6 h-6 mr-2" />
-                    <span>{{ dive.buddies.join(', ') }}</span>
+                    <span>{{ dive.divers.join(', ') }}</span>
                 </div>
                 <div class="flex">
                     <ArrowCircleDownIcon class="w-6 h-6 mr-2" />

@@ -3,13 +3,13 @@ export class Dive {
     date
     depth
     duration
-    buddies
+    divers
 
-    constructor(site, date, depth, duration, buddies) {
+    constructor(site, date, depth, duration, divers) {
         this.site = site
         this.date = date
         this.depth = depth
         this.duration = duration
-        this.buddies = buddies
+        this.divers = divers
     }
 }
