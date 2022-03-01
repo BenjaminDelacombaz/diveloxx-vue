@@ -3,7 +3,7 @@ import LoginPage from './pages/LoginPage.vue'
 import HomePage from './pages/HomePage.vue'
 import RegisterPage from './pages/RegisterPage.vue'
 import PathNotFoundPage from './pages/PathNotFoundPage.vue'
-import ProfilePage from './pages/profile/ProfilePage.vue'
+import DiverPage from './pages/DiverPage.vue'
 import SignOutPage from './pages/SignOutPage.vue'
 import DiveSitesPage from './pages/DiveSitesPage.vue'
 
@@ -42,9 +42,9 @@ const routes = [
         }
     },
     {
-        path: '/profile',
-        name: 'Profile',
-        component: ProfilePage,
+        path: '/my-diver',
+        name: 'MyDiver',
+        component: DiverPage,
         meta: {
             requiresAuth: true,
         }
@@ -55,7 +55,7 @@ const routes = [
         component: DiveSitesPage,
         meta: {
             requiresAuth: true,
-            requiresProfile: true,
+            requiresDiver: true,
         }
     },
     // Always last
@@ -73,17 +73,17 @@ let router = VueRouter.createRouter({
     routes,
 })
 
-const initGuard = (router, user, profile) => {
+const initGuard = (router, user, diver) => {
     router.beforeEach(async (to, from, next) => {
         const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-        const requiresProfile = to.matched.some(record => record.meta.requiresProfile);
+        const requiresDiver = to.matched.some(record => record.meta.requiresDiver);
 
         if (requiresAuth && !user.value) {
             next({ name: 'Login' })
         }
         else {
-            if (requiresProfile && !profile.value) {
-                next({ name: 'Profile' })
+            if (requiresDiver && !diver.value) {
+                next({ name: 'MyDiver' })
             } else {
                 next()
             }

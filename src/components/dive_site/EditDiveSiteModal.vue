@@ -94,7 +94,7 @@
         uid: String,
     })
     const emit = defineEmits(['dive-site-added', 'dive-site-updated'])
-    const profile = inject('profile')
+    const diver = inject('diver')
     const user = inject('user')
     const diveSite = ref(null)
     const state = reactive({
@@ -139,7 +139,7 @@
                         user.value.uid,
                         state
                     )
-                    diveSite.value.owner = profile.value 
+                    diveSite.value.owner = diver.value 
                     emit('dive-site-added', diveSite.value)
                 }
                 diveSite.value = null

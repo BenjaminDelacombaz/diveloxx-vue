@@ -2,7 +2,7 @@
     <input type="checkbox" :id="uid" class="modal-toggle" v-model="isOpen">
     <div class="modal">
         <div class="modal-box">
-            <h3 class="font-bold text-lg">Edit my profile</h3>
+            <h3 class="font-bold text-lg">Edit my diver</h3>
             <div class="alert shadow-lg alert-error" v-if="error">
                 <div>
                     <XCircleIcon class="h-6 w-6" />
@@ -58,19 +58,19 @@
     import { reactive, ref, inject, toRaw } from 'vue'
     import useVuelidate from '@vuelidate/core'
     import { required, minLength, maxLength } from '@vuelidate/validators'
-    import { updateProfile, createProfile } from '../../services/profile.service';
+    import { updateDiver, createDiver } from '../services/diver.service';
     import { XCircleIcon } from "@heroicons/vue/outline"
-    import { Profile } from '../../models/profile.model';
+    import { Diver } from '../models/diver.model';
 
     const props = defineProps({
         uid: String,
     })
-    const emit = defineEmits(['profile-updated'])
-    const profile = inject('profile')
+    const emit = defineEmits(['diver-updated'])
+    const diver = inject('diver')
     const user = inject('user')
     const state = reactive({
-        firstname: profile.value?.firstname ?? '',
-        lastname: profile.value?.lastname ?? '',
+        firstname: diver.value?.firstname ?? '',
+        lastname: diver.value?.lastname ?? '',
     })
     const rules = {
         firstname: { required, minLength: minLength(2), maxLength: maxLength(20) },
@@ -82,19 +82,19 @@
     const save = async () => {
         if (await validation.value.$validate()) {
             try {
-                if (profile.value) {
-                    await updateProfile(user.value.uid, toRaw(state))
-                    profile.value.firstname = state.firstname
-                    profile.value.lastname = state.lastname
+                if (diver.value) {
+                    await updateDiver(diver.value.id, toRaw(state))
+                    diver.value.firstname = state.firstname
+                    diver.value.lastname = state.lastname
                 } else {
-                    await createProfile(user.value.uid, toRaw(state))
-                    profile.value = new Profile(null, state.firstname, state.lastname)
+                    let createdDiver = await createDiver(user.value.uid, toRaw(state))
+                    diver.value = new Diver(createdDiver.id, state.firstname, state.lastname, user.value.uid, user.value.uid)
                 }
-                emit('profile-updated')
+                emit('diver-updated')
                 isOpen.value = false
             } catch (e) {
                 console.error(e)
-                error.value = 'An error occurred while saving the profile'
+                error.value = 'An error occurred while saving the diver'
             }
         }
     }

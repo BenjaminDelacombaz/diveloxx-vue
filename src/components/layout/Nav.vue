@@ -24,8 +24,8 @@
             <div v-if="user" class="dropdown dropdown-end">
                 <div tabindex="0" class="avatar placeholder">
                     <div class="bg-primary text-primary-content rounded-lg w-10 cursor-pointer">
-                        <UserIcon v-if="!profile" class="h-5 w-5" />
-                        <span v-if="profile">{{ profile.firstname.charAt(0) }}{{ profile.lastname.charAt(0) }}</span>
+                        <UserIcon v-if="!diver" class="h-5 w-5" />
+                        <span v-if="diver">{{ diver.firstname.charAt(0) }}{{ diver.lastname.charAt(0) }}</span>
                     </div>
                 </div> 
                 <ul tabindex="0" class="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52 border-2">
@@ -33,7 +33,7 @@
                         <span>{{ user.email }}</span>
                     </li>
                     <li>
-                        <router-link to="/profile" >My profile</router-link>
+                        <router-link to="/my-diver" >My diver</router-link>
                     </li>
                     <li>
                         <a @click="logout()">Sign out</a>
@@ -47,11 +47,10 @@
 <script setup>
     import { inject } from 'vue'
     import { MenuIcon, UserIcon } from "@heroicons/vue/solid"
-    import { signOut } from '../../services/auth.service'
     import { useRouter } from 'vue-router'
 
     const user = inject('user')
-    const profile = inject('profile')
+    const diver = inject('diver')
     const router = useRouter()
     const links = [
         {

@@ -3,12 +3,12 @@
         <div class="card shadow-2xl">
             <div class="card-body items-center center-text">
                 <h2 class="card-title">
-                    {{ profile?.fullname ?? 'No profile? create one' }}
+                    {{ diver?.fullname ?? 'No diver? create one' }}
                 </h2>
                 <div>{{ user.email }}</div>
                 <div class="justify-center card-actions mt-4">
-                    <label for="edit-profile-modal" class="btn btn-outline btn-primary">
-                        Edit my profile
+                    <label for="edit-diver-modal" class="btn btn-outline btn-primary">
+                        Edit my diver
                     </label>
                 </div>
             </div>
@@ -28,17 +28,16 @@
             </div>
         </div>
     </div>
-    <EditProfileModal uid="edit-profile-modal" />
+    <EditDiverModal uid="edit-diver-modal" />
 </template>
 
 <script setup>
     import { inject } from 'vue'
-    import { dives } from '../../data/example_data'
-    import { getDivesGroupedPerYear } from '../../services/dive.service'
-    import EditProfileModal from '../../components/profile/EditProfileModal.vue'
+    import { dives } from '../data/example_data'
+    import { getDivesGroupedPerYear } from '../services/dive.service'
+    import EditDiverModal from '../components/EditDiverModal.vue'
 
     const user = inject('user')
-    const profile = inject('profile')
+    const diver = inject('diver')
     const divesGroupedByYears = getDivesGroupedPerYear(dives)
-    const changeEmail = () => console.log('Change email')
 </script>
