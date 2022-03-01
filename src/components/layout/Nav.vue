@@ -16,9 +16,9 @@
             <span class="text-lg font-bold">Diveloxx</span>
         </div>
         <div class="hidden items-stretch sm:flex">
-            <a class="btn btn-ghost btn-sm rounded-btn" v-for="link in links" :key="link.name" :href="link.href">
+            <router-link class="btn btn-ghost btn-sm rounded-btn" v-for="link in links" :key="link.name" :to="link.href">
                 {{ link.name }}
-            </a>
+            </router-link>
         </div>
         <div class="flex-none">
             <div v-if="user" class="dropdown dropdown-end">
@@ -60,7 +60,7 @@
         },
         {
             name: 'Dive sites',
-            href: '#',
+            href: '/dive-sites',
         },
         {
             name: 'Buddies',

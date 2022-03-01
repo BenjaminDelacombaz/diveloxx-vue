@@ -88,7 +88,7 @@
                     profile.value.lastname = state.lastname
                 } else {
                     await createProfile(user.value.uid, toRaw(state))
-                    profile.value = new Profile(state.firstname, state.lastname)
+                    profile.value = new Profile(null, state.firstname, state.lastname)
                 }
                 emit('profile-updated')
                 isOpen.value = false
