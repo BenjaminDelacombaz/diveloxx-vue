@@ -87,8 +87,8 @@
                     diver.value.firstname = state.firstname
                     diver.value.lastname = state.lastname
                 } else {
-                    let createdDiver = await createDiver(user.value.uid, toRaw(state))
-                    diver.value = new Diver(createdDiver.id, state.firstname, state.lastname, user.value.uid, user.value.uid)
+                    let createdDiver = await createDiver(toRaw(state), null, user.value.uid)
+                    diver.value = new Diver(createdDiver.id, state.firstname, state.lastname, null, user.value.uid)
                 }
                 emit('diver-updated')
                 isOpen.value = false

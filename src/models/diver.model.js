@@ -3,13 +3,13 @@ export class Diver {
     firstname
     lastname
     uid
-    owner_id
-    constructor(id, firstname, lastname, uid, owner_id) {
+    diver_id
+    constructor(id, firstname, lastname, diver_id, uid) {
         this.id = id
         this.firstname = firstname
         this.lastname = lastname
         this.uid = uid
-        this.owner_id = owner_id
+        this.diver_id = diver_id
     }
     get fullname() {
         return `${this.firstname} ${this.lastname}`
