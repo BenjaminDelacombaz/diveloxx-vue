@@ -28,7 +28,7 @@
             </div>
         </div>
     </div>
-    <EditDiverModal uid="edit-diver-modal" />
+    <EditDiverModal modalId="edit-diver-modal" />
 </template>
 
 <script setup>

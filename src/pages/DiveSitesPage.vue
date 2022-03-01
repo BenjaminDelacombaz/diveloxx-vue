@@ -36,12 +36,12 @@
         </div>
         <EditDiveSiteModal
             ref="editDiveSiteModal"
-            uid="edit-dive-site-modal"
+            modalId="edit-dive-site-modal"
             v-on:dive-site-added="diveSiteAdded"
         />
         <DeleteModal
             ref="deleteDiveSiteModal"
-            uid="delete-dive-site-modal"
+            modalId="delete-dive-site-modal"
             base-title="Remove a dive site"
             v-on:delete-element="doDeleteDiveSite"
         />

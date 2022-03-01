@@ -1,5 +1,5 @@
 <template>
-    <input type="checkbox" :id="uid" class="modal-toggle" v-model="isOpen">
+    <input type="checkbox" :id="modalId" class="modal-toggle" v-model="isOpen">
     <div class="modal">
         <div class="modal-box">
             <h3 class="font-bold text-lg">{{ title ?? 'Delete an element' }}</h3>
@@ -11,7 +11,7 @@
             </div>
             <p>Are you sure you want to remove this element?<br />This action is irreversible.</p>
             <div class="modal-action">
-                <label :for="uid" class="btn btn-success">D'ont remove</label>
+                <label :for="modalId" class="btn btn-success">D'ont remove</label>
                 <button type="button" class="btn btn-error" @click="confirmDelete">Remove</button>
             </div>
         </div>
@@ -23,7 +23,7 @@ import { XCircleIcon } from "@heroicons/vue/outline"
 
 
 const props = defineProps({
-    uid: String,
+    modalId: String,
     baseTitle: String
 })
 const error = ref(null)

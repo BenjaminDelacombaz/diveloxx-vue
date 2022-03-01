@@ -1,5 +1,5 @@
 <template>
-    <input type="checkbox" :id="uid" class="modal-toggle" v-model="isOpen">
+    <input type="checkbox" :id="modalId" class="modal-toggle" v-model="isOpen">
     <div class="modal">
         <div class="modal-box">
             <h3 class="font-bold text-lg">Edit my diver</h3>
@@ -47,7 +47,7 @@
                     </label>
                 </div>
                 <div class="modal-action">
-                    <label :for="uid" class="btn btn-error">Cancel</label>
+                    <label :for="modalId" class="btn btn-error">Cancel</label>
                     <button class="btn btn-success">Save</button>
                 </div>
             </form>
@@ -63,7 +63,7 @@
     import { Diver } from '../models/diver.model';
 
     const props = defineProps({
-        uid: String,
+        modalId: String,
     })
     const emit = defineEmits(['diver-updated'])
     const diver = inject('diver')
