@@ -132,14 +132,14 @@
                 } else {
                     let createdDiveSite = await createDiveSite({
                         ...toRaw(state),
-                        owner_id: user.value.uid
+                        diver_id: diver.value.id
                     })
                     diveSite.value = DiveSite.fromFormState(
                         createdDiveSite.id,
-                        user.value.uid,
+                        diver.value.id,
                         state
                     )
-                    diveSite.value.owner = diver.value 
+                    diveSite.value.diver = diver.value 
                     emit('dive-site-added', diveSite.value)
                 }
                 diveSite.value = null

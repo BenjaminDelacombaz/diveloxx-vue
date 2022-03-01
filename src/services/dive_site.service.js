@@ -7,7 +7,7 @@ const colName = 'dive_sites'
 const getDiveSites = async () => {
     const querySnapshot = await getDocs(collection(getFirestore(), colName))
     let diveSites = []
-    let ownerIds = []
+    let diverIds = []
     let divers = []
     querySnapshot.forEach((doc) => {
         let diveSite = new DiveSite(
@@ -16,16 +16,16 @@ const getDiveSites = async () => {
             doc.data().description,
             doc.data().location,
             doc.data().country_code,
-            doc.data().owner_id,
+            doc.data().diver_id,
         )
         diveSites.push(diveSite)
 
-        if (!ownerIds.includes(diveSite.owner_id)) ownerIds.push(diveSite.owner_id)
+        if (!diverIds.includes(diveSite.diver_id)) diverIds.push(diveSite.diver_id)
     })
-    divers = await getDiversById(ownerIds)
+    divers = await getDiversById(diverIds)
 
     for (const diveSite of diveSites) {
-        diveSite.owner = divers.find((diver) => diver.id == diveSite.owner_id)
+        diveSite.diver = divers.find((diver) => diver.id == diveSite.diver_id)
     }
 
     return diveSites

@@ -7,21 +7,21 @@ export class DiveSite {
     location
     country_code
     country
-    owner_id
-    owner
+    diver_id
+    diver
 
-    constructor(id, name, description, location, country_code, owner_id) {
+    constructor(id, name, description, location, country_code, diver_id) {
         this.id = id
         this.name = name
         this.description = description
         this.location = location
         this.country_code = country_code
-        this.owner_id = owner_id
+        this.diver_id = diver_id
         this.refreshCountry()
     }
 
-    static fromFormState(id, ownerId, state) {
-        return new DiveSite(id, state.name, state.description, state.location, state.country_code, ownerId)
+    static fromFormState(id, diverId, state) {
+        return new DiveSite(id, state.name, state.description, state.location, state.country_code, diverId)
     }
 
     updateFromFormState(state) {
@@ -37,7 +37,7 @@ export class DiveSite {
     }
 
     canEdit(uid) {
-        return uid == this.owner_id 
+        return uid == this.diver_id 
     }
 
     canDelete(uid) {
