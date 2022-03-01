@@ -1,10 +1,10 @@
 <template>
-    <div class="alert shadow-lg alert-warning mb-6" v-if="!profile">
+    <div class="alert shadow-lg alert-warning mb-6" v-if="!diver">
         <div>
             <XCircleIcon class="h-6 w-6" />
             <span>
-                You don't have a profile yet, please complete it to use the full application by clicking
-                <router-link class="link link-primary" to="/profile" >here</router-link>
+                You don't have a diver yet, please complete it to use the full application by clicking
+                <router-link class="link link-primary" to="/my-diver" >here</router-link>
             </span>
         </div>
     </div>
@@ -42,5 +42,5 @@ const lastDive = dives.sort((a,b) => b.date - a.date)[0]
 const deepestDive = dives.sort((a,b) => b.depth - a.depth)[0]
 const longestDive = dives.sort((a,b) => b.duration - a.duration)[0]
 const newDive = () => console.log('Go to new dive')
-const profile = inject('profile')
+const diver = inject('diver')
 </script>

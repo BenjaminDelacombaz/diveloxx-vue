@@ -1,6 +1,6 @@
 import { collection, getDocs, getFirestore, addDoc, updateDoc, doc, deleteDoc } from "firebase/firestore"
 import { DiveSite } from "../models/dive_site.model";
-import { getProfilesById } from "./profile.service";
+import { getDiversById } from "./diver.service";
 
 const colName = 'dive_sites'
 
@@ -8,7 +8,7 @@ const getDiveSites = async () => {
     const querySnapshot = await getDocs(collection(getFirestore(), colName))
     let diveSites = []
     let ownerIds = []
-    let profiles = []
+    let divers = []
     querySnapshot.forEach((doc) => {
         let diveSite = new DiveSite(
             doc.id,
@@ -22,10 +22,10 @@ const getDiveSites = async () => {
 
         if (!ownerIds.includes(diveSite.owner_id)) ownerIds.push(diveSite.owner_id)
     })
-    profiles = await getProfilesById(ownerIds)
+    divers = await getDiversById(ownerIds)
 
     for (const diveSite of diveSites) {
-        diveSite.owner = profiles.find((profile) => profile.id == diveSite.owner_id)
+        diveSite.owner = divers.find((diver) => diver.id == diveSite.owner_id)
     }
 
     return diveSites
