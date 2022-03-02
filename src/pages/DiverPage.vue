@@ -7,9 +7,9 @@
                 </h2>
                 <div>{{ user.email }}</div>
                 <div class="justify-center card-actions mt-4">
-                    <label for="edit-diver-modal" class="btn btn-outline btn-primary">
+                    <button @click="editDiver()" class="btn btn-outline btn-primary">
                         Edit my diver
-                    </label>
+                    </button>
                 </div>
             </div>
         </div>
@@ -28,11 +28,14 @@
             </div>
         </div>
     </div>
-    <EditDiverModal modalId="edit-diver-modal" />
+    <EditDiverModal 
+        ref="editDiverModal"
+        modalId="edit-diver-modal"
+    />
 </template>
 
 <script setup>
-    import { inject } from 'vue'
+    import { inject, ref } from 'vue'
     import { dives } from '../data/example_data'
     import { getDivesGroupedPerYear } from '../services/dive.service'
     import EditDiverModal from '../components/EditDiverModal.vue'
@@ -40,4 +43,7 @@
     const user = inject('user')
     const diver = inject('diver')
     const divesGroupedByYears = getDivesGroupedPerYear(dives)
+    const editDiverModal = ref(null)
+
+    const editDiver = () => editDiverModal.value.open(diver.value, true)
 </script>

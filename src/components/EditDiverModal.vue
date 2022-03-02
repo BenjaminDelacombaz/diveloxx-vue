@@ -2,7 +2,7 @@
     <input type="checkbox" :id="modalId" class="modal-toggle" v-model="isOpen">
     <div class="modal">
         <div class="modal-box">
-            <h3 class="font-bold text-lg">Edit my diver</h3>
+            <h3 class="font-bold text-lg">Edit a diver</h3>
             <div class="alert shadow-lg alert-error" v-if="error">
                 <div>
                     <XCircleIcon class="h-6 w-6" />
@@ -55,22 +55,24 @@
     </div>
 </template>
 <script setup>
-    import { reactive, ref, inject, toRaw } from 'vue'
+    import { reactive, ref, inject, toRaw, watch } from 'vue'
     import useVuelidate from '@vuelidate/core'
     import { required, minLength, maxLength } from '@vuelidate/validators'
-    import { updateDiver, createDiver } from '../services/diver.service';
     import { XCircleIcon } from "@heroicons/vue/outline"
-    import { Diver } from '../models/diver.model';
+    import { Diver } from '../models/diver.model'    
+    import { createDiver, updateDiver } from '../services/diver.service'
 
     const props = defineProps({
         modalId: String,
     })
-    const emit = defineEmits(['diver-updated'])
-    const diver = inject('diver')
+    const emit = defineEmits(['diver-added', 'diver-updated'])
+    const currentDiver = inject('diver')
     const user = inject('user')
+    const diver = ref(null)
+    const ownDiver = ref(false)
     const state = reactive({
-        firstname: diver.value?.firstname ?? '',
-        lastname: diver.value?.lastname ?? '',
+        firstname: '',
+        lastname: '',
     })
     const rules = {
         firstname: { required, minLength: minLength(2), maxLength: maxLength(20) },
@@ -79,18 +81,42 @@
     const validation = useVuelidate(rules, state, { $autoDirty: true })
     const error = ref(null)
     const isOpen = ref(false)
+    const initState = () => {
+        state.firstname = diver.value?.firstname ?? ''
+        state.lastname = diver.value?.lastname ?? ''
+    }
+    const open = (diverParam, ownDiverParam = false) => {
+        diver.value = diverParam
+        ownDiver.value = ownDiverParam
+        isOpen.value = true
+    }
     const save = async () => {
         if (await validation.value.$validate()) {
             try {
                 if (diver.value) {
                     await updateDiver(diver.value.id, toRaw(state))
-                    diver.value.firstname = state.firstname
-                    diver.value.lastname = state.lastname
+                    diver.value.updateFromFormState(state)
+                    if (currentDiver.value.uid == diver.value.uid) {
+                        currentDiver.value = diver.value
+                    }
+                    emit('diver-updated', diver.value)
                 } else {
-                    let createdDiver = await createDiver(user.value.uid, toRaw(state))
-                    diver.value = new Diver(createdDiver.id, state.firstname, state.lastname, user.value.uid, user.value.uid)
+                    let diverId = ownDiver.value ? null : currentDiver.value.id
+                    let uid = ownDiver.value ? user.value.uid : null
+                    let createdDiver = await createDiver(toRaw(state), diverId, uid)
+                    diver.value = Diver.fromFormState(
+                        createdDiver.id,
+                        diverId,
+                        uid,
+                        state
+                    )
+                    diver.value.diver = diver.value
+                    if (ownDiver.value) {
+                        currentDiver.value = diver.value
+                    }
+                    emit('diver-added', diver.value)
                 }
-                emit('diver-updated')
+                diver.value = null
                 isOpen.value = false
             } catch (e) {
                 console.error(e)
@@ -98,4 +124,12 @@
             }
         }
     }
+    defineExpose({
+        open,  
+    })
+    watch(isOpen, (val) => {
+        if (!val) diver.value = null
+        initState()
+        validation.value.$reset()
+    })
 </script>
