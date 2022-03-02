@@ -13,12 +13,22 @@ export class Diver {
         this.uid = uid
         this.diver_id = diver_id
     }
+
+    static fromFormState(id, diverId, uid, state) {
+        return new Diver(id, state.firstname, state.lastname, diverId, uid)
+    }
+
     get fullname() {
         return `${this.firstname} ${this.lastname}`
     }
 
     get anonymizedName() {
         return `${this.firstname} ${this.lastname.charAt(0)}.`
+    }
+
+    updateFromFormState(state) {
+        this.firstname = state.firstname
+        this.lastname = state.lastname
     }
 
     canEdit(diverId, uid) {
