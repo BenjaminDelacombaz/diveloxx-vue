@@ -62,8 +62,8 @@
             href: '/dive-sites',
         },
         {
-            name: 'Buddies',
-            href: '#',
+            name: 'Divers',
+            href: '/divers',
         },
         {
             name: 'Stats',

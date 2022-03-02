@@ -6,6 +6,7 @@ import PathNotFoundPage from './pages/PathNotFoundPage.vue'
 import DiverPage from './pages/DiverPage.vue'
 import SignOutPage from './pages/SignOutPage.vue'
 import DiveSitesPage from './pages/DiveSitesPage.vue'
+import DiversPage from './pages/DiversPage.vue'
 
 const routes = [
     {
@@ -53,6 +54,15 @@ const routes = [
         path: '/dive-sites',
         name: 'DiveSites',
         component: DiveSitesPage,
+        meta: {
+            requiresAuth: true,
+            requiresDiver: true,
+        }
+    },
+    {
+        path: '/divers',
+        name: 'Divers',
+        component: DiversPage,
         meta: {
             requiresAuth: true,
             requiresDiver: true,
