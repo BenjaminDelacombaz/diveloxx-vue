@@ -1,4 +1,4 @@
-import { doc, getFirestore, updateDoc, documentId, query, collection, where, getDocs, limitToLast, addDoc } from "firebase/firestore";
+import { doc, getFirestore, updateDoc, documentId, query, collection, where, getDocs, limitToLast, addDoc, deleteDoc } from "firebase/firestore";
 import { Diver } from "../models/diver.model";
 
 const getDiverRef = (id) => doc(getFirestore(), "divers", id)
@@ -75,4 +75,6 @@ const getDivers = async () => {
     return divers
 }
 
-export { getDiver, updateDiver, createDiver, getDiversById, getDivers, getDiversByUid }
+const deleteDiver = (id) => deleteDoc(getDiverRef(id))
+
+export { getDiver, updateDiver, createDiver, getDiversById, getDivers, getDiversByUid, deleteDiver }
