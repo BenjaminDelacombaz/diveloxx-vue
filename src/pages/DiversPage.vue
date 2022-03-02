@@ -21,7 +21,7 @@
                 </div>
                 <div class="flex mb-2 mx-4 items-end">
                     <div class="flex-none">
-                        <button v-if="diver.canEdit(currentDiver.id, currentDiver.uid)" class="btn btn-sm btn-square btn-primary mr-1">
+                        <button v-if="diver.canEdit(currentDiver.id, currentDiver.uid)" class="btn btn-sm btn-square btn-primary mr-1" @click="editDiver(diver)">
                             <PencilIcon class="h-5 w-5" />
                         </button>
                         <button v-if="diver.canDelete(currentDiver.id)" class="btn btn-sm btn-square btn-primary btn-outline">
@@ -33,17 +33,27 @@
             </div>
         </div>
     </div>
+    <EditDiverModal 
+        ref="editDiverModal"
+        modalId="edit-diver-modal"
+        v-on:diver-added="diverAdded"
+    />
 </template>
 <script setup>
 import { inject, onMounted, reactive, ref } from 'vue'
 import { XCircleIcon, PencilIcon, TrashIcon } from "@heroicons/vue/outline"
 import Loader from "../components/layout/Loader.vue"
 import { getDivers } from '../services/diver.service';
+import EditDiverModal from '../components/EditDiverModal.vue'
 
 const currentDiver = inject('diver')
 const divers = reactive([])
 const error = ref(null)
 const isLoading = ref(true)
+const editDiverModal = ref(null)
+
+const editDiver = (diver) => editDiverModal.value.open(diver)
+const diverAdded = (diver) => divers.push(diver)
 
 onMounted(async () => {
     try {
