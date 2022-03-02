@@ -4,6 +4,8 @@ export class Diver {
     lastname
     uid
     diver_id
+    diver
+
     constructor(id, firstname, lastname, diver_id, uid) {
         this.id = id
         this.firstname = firstname
@@ -17,5 +19,13 @@ export class Diver {
 
     get anonymizedName() {
         return `${this.firstname} ${this.lastname.charAt(0)}.`
+    }
+
+    canEdit(diverId, uid) {
+        return diverId == this.diver_id || uid == this.uid
+    }
+
+    canDelete(diverId) {
+        return diverId == this.diver_id
     }
 }
