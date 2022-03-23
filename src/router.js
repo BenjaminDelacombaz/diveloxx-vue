@@ -7,6 +7,7 @@ import DiverPage from './pages/DiverPage.vue'
 import SignOutPage from './pages/SignOutPage.vue'
 import DiveSitesPage from './pages/DiveSitesPage.vue'
 import DiversPage from './pages/DiversPage.vue'
+import DivesPage from './pages/DivesPage.vue'
 
 const routes = [
     {
@@ -63,6 +64,15 @@ const routes = [
         path: '/divers',
         name: 'Divers',
         component: DiversPage,
+        meta: {
+            requiresAuth: true,
+            requiresDiver: true,
+        }
+    },
+    {
+        path: '/dives',
+        name: 'Dives',
+        component: DivesPage,
         meta: {
             requiresAuth: true,
             requiresDiver: true,

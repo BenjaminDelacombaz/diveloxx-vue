@@ -55,7 +55,7 @@
     const links = [
         {
             name: 'Dives',
-            href: '#',
+            href: '/dives',
         },
         {
             name: 'Dive sites',

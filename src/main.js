@@ -6,6 +6,7 @@ import { initializeApp } from "firebase/app";
 import firebaseConfig from '../firebase.config.js'
 import { getCurrentUser } from './services/auth.service';
 import { getDiver } from './services/diver.service';
+import '@vuepic/vue-datepicker/dist/main.css'
 
 initializeApp(firebaseConfig)
 
@@ -17,6 +18,10 @@ if (user.value) {
     diver.value = await getDiver(user.value.uid)
 }
 initGuard(router, user, diver)
+
+Date.prototype.toDateInputValue = (function() {
+    return new Date(this.getTime() + new Date().getTimezoneOffset() * -60 * 1000).toISOString().slice(0, 19)
+});
 
 createApp(App)
     .use(router)

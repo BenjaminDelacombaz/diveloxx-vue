@@ -1,4 +1,4 @@
-import { collection, getDocs, getFirestore, addDoc, updateDoc, doc, deleteDoc } from "firebase/firestore"
+import { collection, getDocs, getFirestore, addDoc, updateDoc, doc, deleteDoc, query, where, documentId } from "firebase/firestore"
 import { DiveSite } from "../models/dive_site.model";
 import { getDiversById } from "./diver.service";
 
@@ -35,4 +35,15 @@ const createDiveSite = (diveSiteAttr) => addDoc(collection(getFirestore(), colNa
 const updateDiveSite = (id, diveSiteAttr) => updateDoc(doc(getFirestore(), colName, id), diveSiteAttr)
 const deleteDiveSite = (id) => deleteDoc(doc(getFirestore(), colName, id))
 
-export { getDiveSites, createDiveSite, updateDiveSite, deleteDiveSite }
+const getDiveSitesById = async (ids) => {
+    const q = query(collection(getFirestore(), colName), where(documentId(), "in", ids))
+    const querySnapshot = await getDocs(q)
+    let diveSites = []
+    querySnapshot.forEach((doc) => {
+        diveSites.push(new DiveSite(doc.id, doc.data().name, doc.data().description, doc.data().location, doc.data().country_code, doc.data().diver_id))
+    })
+
+    return diveSites
+}
+
+export { getDiveSites, createDiveSite, updateDiveSite, deleteDiveSite, getDiveSitesById }
