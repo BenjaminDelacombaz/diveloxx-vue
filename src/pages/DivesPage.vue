@@ -14,27 +14,27 @@
                 Add a dive
             </label>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             <div class="card shadow-2xl" v-for="(dive, i) in sortedDives(dives)" :key="dive.id">
                 <div class="badge badge-primary text-left ml-4 mt-4">{{ dives.length - i }}</div>
                 <div class="card-body items-center text-center py-2">
                     <h2 class="card-title">{{ dive.dive_site.name }}</h2>
                     <p class="text-sm text-gray-400">{{ dive.dateAsString }}</p>
-                    <div class="grid grid-cols-2 gap-2">
+                    <div class="text-left">
                         <div class="flex items-center">
                             <LocationMarkerIcon class="w-6 h-6 mr-2" />
                             <span>{{ dive.dive_site.name }}</span>
                         </div>
-                        <div class="flex items-center">
+                        <div class="flex items-center mt-2">
                             <UsersIcon class="w-6 h-6 mr-2" />
                             <span v-if="dive.divers.length > 0">{{ dive.getDiversAsString(true) }}</span>
                             <span v-else>Solo</span>
                         </div>
-                        <div class="flex items-center">
+                        <div class="flex items-center mt-2">
                             <ArrowCircleDownIcon class="w-6 h-6 mr-2" />
                             <span>{{ dive.depth }} m</span>
                         </div>
-                        <div class="flex items-center">
+                        <div class="flex items-center mt-2">
                             <ClockIcon class="w-6 h-6 mr-2" />
                             <span>{{ dive.duration }} min</span>
                         </div>
