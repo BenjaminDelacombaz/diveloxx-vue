@@ -26,7 +26,8 @@
                         </div>
                         <div class="flex items-center">
                             <UsersIcon class="w-6 h-6 mr-2" />
-                            <span>{{ dive.getDiversAsString(true) }}</span>
+                            <span v-if="dive.divers.length > 0">{{ dive.getDiversAsString(true) }}</span>
+                            <span v-else>Solo</span>
                         </div>
                         <div class="flex items-center">
                             <ArrowCircleDownIcon class="w-6 h-6 mr-2" />
@@ -37,6 +38,7 @@
                             <span>{{ dive.duration }} min</span>
                         </div>
                     </div>
+                    <div class="text-sm text-gray-400">{{ dive.comments }}</div>
                 </div>
                 <div class="flex mb-2 mx-4 items-end">
                     <div class="flex-none">
