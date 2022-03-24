@@ -7,13 +7,15 @@
                 </div> 
                 <ul tabindex="0" class="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52 border-2">
                     <li v-for="link in links" :key="link.name">
-                        <a :href="link.href">{{ link.name }}</a>
+                        <router-link :to="link.href">
+                            {{ link.name }}
+                        </router-link>
                     </li>
                 </ul>
             </div>
         </div>
         <div class="flex flex-1 px-2 mx-2">
-            <span class="text-lg font-bold">Diveloxx</span>
+            <router-link class="text-lg font-bold" to="/">Diveloxx</router-link>
         </div>
         <div class="hidden items-stretch sm:flex">
             <router-link class="btn btn-ghost btn-sm rounded-btn" v-for="link in links" :key="link.name" :to="link.href">
