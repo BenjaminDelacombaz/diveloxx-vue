@@ -1,5 +1,14 @@
 <template>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="alert shadow-lg alert-error" v-if="error">
+        <div>
+            <XCircleIcon class="h-6 w-6" />
+            <span>{{ error }}</span>
+        </div>
+    </div>
+    <div class="center-items" v-if="isLoading">
+        <Loader />
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4" v-if="!isLoading">
         <div class="card shadow-2xl">
             <div class="card-body items-center center-text">
                 <h2 class="card-title">
@@ -13,7 +22,7 @@
                 </div>
             </div>
         </div>
-        <div class="shadow-2xl stats">
+        <div class="shadow-2xl stats" v-if="!isLoading">
             <div class="stat place-items-center">
                 <div class="stat-title">Dives count</div>
                 <div class="stat-value">{{ dives.length }}</div>
@@ -35,15 +44,30 @@
 </template>
 
 <script setup>
-    import { inject, ref } from 'vue'
-    import { dives } from '../data/example_data'
-    import { getDivesGroupedPerYear } from '../services/dive.service'
+    import { inject, onMounted, ref } from 'vue'
+    import { getDivesByDiver, getDivesGroupedPerYear } from '../services/dive.service'
     import EditDiverModal from '../components/EditDiverModal.vue'
+    import Loader from '../components/layout/Loader.vue'
+    import { XCircleIcon } from "@heroicons/vue/outline"
 
     const user = inject('user')
     const diver = inject('diver')
-    const divesGroupedByYears = getDivesGroupedPerYear(dives)
+    const dives = ref(null)
+    const divesGroupedByYears = ref(null)
     const editDiverModal = ref(null)
+    const isLoading = ref(true)
+    const error = ref(null)
 
     const editDiver = () => editDiverModal.value.open(diver.value, true)
+
+    onMounted(async () => {
+        try {
+            dives.value = (await getDivesByDiver(diver.value.id))
+            divesGroupedByYears.value = getDivesGroupedPerYear(dives.value)
+        } catch (e) {
+            console.error(e)
+            error.value = 'An error occurred while retrieving the dives'
+        }
+        isLoading.value = false
+    })
 </script>
