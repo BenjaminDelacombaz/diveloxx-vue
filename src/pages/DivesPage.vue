@@ -15,8 +15,9 @@
             </label>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div class="card shadow-2xl" v-for="dive in dives" :key="dive.id">
-                <div class="card-body items-center text-center">
+            <div class="card shadow-2xl" v-for="(dive, i) in sortedDives(dives)" :key="dive.id">
+                <div class="badge badge-primary text-left ml-4 mt-4">{{ dives.length - i }}</div>
+                <div class="card-body items-center text-center py-2">
                     <h2 class="card-title">{{ dive.dive_site.name }}</h2>
                     <p class="text-sm text-gray-400">{{ dive.dateAsString }}</p>
                     <div class="grid grid-cols-2 gap-2">
@@ -113,4 +114,5 @@ const doDeleteDive = async (dive) => {
         error.value = 'An error occurred while deleting the dive'
     }
 }
+const sortedDives = (array) => dives.sort((a,b) => b.date - a.date)
 </script>
