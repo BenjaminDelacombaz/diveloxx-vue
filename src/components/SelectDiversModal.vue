@@ -6,7 +6,7 @@
             <div>
                 <div class="flex flex-wrap h-96 gap-4 overflow-auto p-4">
                     <div 
-                        class="card shadow-xl flex-shrink-0 flex-grow w-1/3 bg-success"
+                        class="card shadow-xl flex-shrink-0 flex-grow w-full md:w-1/3 bg-success"
                         v-for="diver of sortedDivers(selectedDivers)" :ref="diver.id" 
                         @click="selectDiver(diver)"
                     >
@@ -15,7 +15,7 @@
                         </div>
                     </div>
                     <div 
-                        class="card bg-base-100 shadow-xl flex-shrink-0 flex-grow w-1/3"
+                        class="card shadow-xl flex-shrink-0 flex-grow w-full md:w-1/3"
                         v-for="diver of sortedDivers(unselectedDivers)" :ref="diver.id"
                         @click="selectDiver(diver)"
                     >
