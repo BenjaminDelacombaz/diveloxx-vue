@@ -5,16 +5,16 @@
         </figure>
         <div class="card-body">
             <h2 class="card-title">
-                {{ title }} {{ dive.date.toLocaleDateString() }}
+                {{ title }} {{ dive.dateAsString }}
             </h2>
             <div class="grid grid-cols-2 gap-2">
                 <div class="flex">
                     <LocationMarkerIcon class="w-6 h-6 mr-2" />
-                    <span>{{ dive.site }}</span>
+                    <span>{{ dive.dive_site.name }}</span>
                 </div>
                 <div class="flex">
                     <UsersIcon class="w-6 h-6 mr-2" />
-                    <span>{{ dive.divers.join(', ') }}</span>
+                    <span>{{ dive.getDiversAsString(true) }}</span>
                 </div>
                 <div class="flex">
                     <ArrowCircleDownIcon class="w-6 h-6 mr-2" />

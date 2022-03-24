@@ -1,4 +1,13 @@
 <template>
+    <div class="alert shadow-lg alert-error" v-if="error">
+        <div>
+            <XCircleIcon class="h-6 w-6" />
+            <span>{{ error }}</span>
+        </div>
+    </div>
+    <div class="center-items">
+        <Loader v-if="isLoading" />
+    </div>
     <div class="alert shadow-lg alert-warning mb-6" v-if="!diver">
         <div>
             <XCircleIcon class="h-6 w-6" />
@@ -8,7 +17,7 @@
             </span>
         </div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" v-if="!error && !isLoading">
         <DiveCardHome
             v-if="lastDive"
             :dive="lastDive"
@@ -33,14 +42,31 @@
 </template>
 
 <script setup>
-import { dives } from '../data/example_data'
 import DiveCardHome from "../components/DiveCardHome.vue";
-import { inject } from 'vue';
+import { inject, onMounted, reactive, ref } from 'vue';
 import { XCircleIcon } from "@heroicons/vue/outline"
+import Loader from "../components/layout/Loader.vue"
+import { getDivesByDiver } from "../services/dive.service";
 
-const lastDive = dives.sort((a,b) => b.date - a.date)[0]
-const deepestDive = dives.sort((a,b) => b.depth - a.depth)[0]
-const longestDive = dives.sort((a,b) => b.duration - a.duration)[0]
 const newDive = () => console.log('Go to new dive')
 const diver = inject('diver')
+const dives = reactive([])
+const lastDive = ref(null)
+const deepestDive = ref(null)
+const longestDive = ref(null)
+const isLoading = ref(true)
+const error = ref(null)
+
+onMounted(async () => {
+    try {
+        dives.push(...(await getDivesByDiver(diver.value.id)))
+        lastDive.value = dives.sort((a,b) => b.date - a.date)[0]
+        deepestDive.value = dives.sort((a,b) => b.depth - a.depth)[0]
+        longestDive.value = dives.sort((a,b) => b.duration - a.duration)[0]
+    } catch(e) {
+        console.error(e)
+        error.value = 'An error occurred while retrieving the dives'
+    }
+    isLoading.value = false
+})
 </script>
