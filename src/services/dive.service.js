@@ -35,6 +35,7 @@ const getDivesByDiver = async (diverId) => {
             doc.data().diver_id,
             doc.data().divers_id,
             doc.data().duration,
+            doc.data().tags
         )
         dives.push(dive)
 

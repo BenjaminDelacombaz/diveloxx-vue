@@ -16,7 +16,12 @@
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             <div class="card shadow-2xl" v-for="(dive, i) in sortedDives(dives)" :key="dive.id">
-                <div class="badge badge-primary text-left ml-4 mt-4">{{ dives.length - i }}</div>
+                <div class="flex justify-between mx-4 mt-4">
+                    <div><div class="badge badge-sm badge-primary">{{ dives.length - i }}</div></div>
+                    <div>
+                        <div class="badge badge-sm badge-primary mr-1" v-for="tags in dive.tags">{{ tags }}</div>
+                    </div>
+                </div>
                 <div class="card-body items-center text-center py-2">
                     <h2 class="card-title">{{ dive.dive_site.name }}</h2>
                     <p class="text-sm text-gray-400">{{ dive.dateAsString }}</p>
@@ -56,6 +61,7 @@
         <EditDiveModal
             ref="editDiveModal"
             modalId="edit-dive-modal"
+            :tags="tags"
             v-on:dive-added="diveAdded"
         />
         <DeleteModal
@@ -84,6 +90,7 @@ import { deleteDive, getDivesByDiver } from '../services/dive.service'
 
 const diver = inject('diver')
 const dives = reactive([])
+const tags = reactive([])
 const error = ref(null)
 const isLoading = ref(true)
 const editDiveModal = ref(null)
@@ -92,6 +99,7 @@ const deleteDiveModal = ref(null)
 onMounted(async () => {
     try {
         dives.push(...(await getDivesByDiver(diver.value.id)))
+        tags.push(...new Set(dives.flatMap(dive => dive.tags ?? [])))
     } catch(e) {
         console.error(e)
         error.value = 'An error occurred while retrieving the dives'

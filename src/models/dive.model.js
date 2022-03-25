@@ -11,7 +11,7 @@ export class Dive {
     divers = []
     duration
     
-    constructor(id, comments, date, depth, dive_site_id, diver_id, divers_id, duration) {
+    constructor(id, comments, date, depth, dive_site_id, diver_id, divers_id, duration, tags) {
         this.id = id
         this.comments = comments
         this.date = date
@@ -20,10 +20,11 @@ export class Dive {
         this.diver_id = diver_id
         this.divers_id = divers_id
         this.duration = duration
+        this.tags = tags
     }
 
     static fromFormState(id, diverId, state) {
-        return new Dive(id, state.comments, new Date(state.date), state.depth, state.dive_site_id, diverId, state.divers_id, state.duration)
+        return new Dive(id, state.comments, new Date(state.date), state.depth, state.dive_site_id, diverId, state.divers_id, state.duration, state.tags)
     }
 
     updateFromFormState(state) {
