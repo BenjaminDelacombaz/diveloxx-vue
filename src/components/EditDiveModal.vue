@@ -111,6 +111,25 @@
                         </span>
                     </label>
                 </div>
+                <!-- Tags -->
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text"></span>
+                    </label>
+                    <div 
+                        class="border rounded-lg min-h-12 flex flex-wrap gap-1 px-2 py-2"
+                        :class="{ 'border-error': validation.tags.$error }"
+                        @click="openSelectTagsModal"
+                    >
+                        <span v-if="!state.tags.length">Select some tags</span>
+                        <div class="badge flex-shrink-0" v-for="tag of state.tags" :ref="tag">{{ tag }}</div>
+                    </div>
+                    <label class="label" v-for="error of validation.tags.$errors" :key="error.$uid">
+                        <span class="label-text-alt">
+                            {{ error.$message }}
+                        </span>
+                    </label>
+                </div>
                 <!-- Comments -->
                 <div class="form-control w-full">
                     <label class="label">
@@ -143,6 +162,14 @@
         v-on:divers-updated="updateDivers"
         v-if="!isLoading"
     />
+    <SelectTagsModal
+        ref="selectTagsModal"
+        modal-id="select-tags-modal"
+        :tags="tags"
+        :initial-tags="state.tags"
+        v-on:tags-updated="updateTags"
+        v-if="!isLoading"
+    />
 </template>
 <script setup>
 import { reactive, ref, inject, toRaw, watch, onMounted } from 'vue'
@@ -153,11 +180,13 @@ import { getDiveSites } from '../services/dive_site.service'
 import { getDivers } from '../services/diver.service'
 import { createDive, updateDive } from '../services/dive.service'
 import SelectDiversModal from './SelectDiversModal.vue'
+import SelectTagsModal from './SelectTagsModal.vue'
 import Datepicker from '@vuepic/vue-datepicker'
 import { Dive } from '../models/dive.model'
 
 const props = defineProps({
     modalId: String,
+    tags: Array,
 })
 const emit = defineEmits(['dive-added', 'dive-updated'])
 const diver = inject('diver')
@@ -166,6 +195,7 @@ const diveSites = reactive([])
 const divers = reactive([])
 const isLoading = ref(true)
 const selectDiversModal = ref(null)
+const selectTagsModal = ref(null)
 const state = reactive({
     comments: '',
     date: (new Date()).toDateInputValue(),
@@ -173,6 +203,7 @@ const state = reactive({
     dive_site_id: '',
     divers_id: [],
     duration: '',
+    tags: [],
 })
 const rules = {
     comments: {},
@@ -181,6 +212,7 @@ const rules = {
     dive_site_id: { required },
     divers_id: {},
     duration: { required, numeric, minValue: minValue(0) },
+    tags: {},
 }
 const validation = useVuelidate(rules, state, { $autoDirty: true })
 const error = ref(null)
@@ -192,6 +224,7 @@ const initState = () => {
     state.dive_site_id = dive.value?.dive_site_id ?? ''
     state.divers_id = dive.value?.divers_id ?? []
     state.duration = dive.value?.duration ?? ''
+    state.tags = dive.value?.tags ?? []
 }
 const open = (diveParam) => {
     dive.value = diveParam
@@ -227,7 +260,9 @@ const save = async () => {
     }
 }
 const openSelectDiversModal = () => selectDiversModal.value.open()
+const openSelectTagsModal = () => selectTagsModal.value.open()
 const updateDivers = (selectedDivers) => state.divers_id = selectedDivers.map(d => d.id)
+const updateTags = (selectedTags) => state.tags = selectedTags
 defineExpose({
     open,  
 })
