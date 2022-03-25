@@ -22,14 +22,14 @@
                 </div>
             </div>
         </div>
-        <div class="shadow-2xl stats" v-if="!isLoading">
+        <div class="shadow-2xl stats" v-if="!isLoading && diver && dives">
             <div class="stat place-items-center">
                 <div class="stat-title">Dives count</div>
                 <div class="stat-value">{{ dives.length }}</div>
             </div>
             <div class="stat place-items-center">
                 <div class="stat-title">Average dives by years</div>
-                <div class="stat-value">{{ dives.length / Object.keys(divesGroupedByYears).length }}</div>
+                <div class="stat-value">{{ dives.length > 0 ? dives.length / Object.keys(divesGroupedByYears).length : 0 }}</div>
             </div>
             <div class="stat place-items-center">
                 <div class="stat-title">Dives this year</div>
@@ -40,6 +40,7 @@
     <EditDiverModal 
         ref="editDiverModal"
         modalId="edit-diver-modal"
+        v-on:diver-added="init"
     />
 </template>
 
@@ -59,15 +60,20 @@
     const error = ref(null)
 
     const editDiver = () => editDiverModal.value.open(diver.value, true)
-
-    onMounted(async () => {
+    const init = async () => {
         try {
-            dives.value = (await getDivesByDiver(diver.value.id))
-            divesGroupedByYears.value = getDivesGroupedPerYear(dives.value)
+            if (diver.value) {
+                dives.value = (await getDivesByDiver(diver.value.id))
+                divesGroupedByYears.value = getDivesGroupedPerYear(dives.value)
+            }
         } catch (e) {
             console.error(e)
             error.value = 'An error occurred while retrieving the dives'
         }
         isLoading.value = false
+    }
+
+    onMounted(async () => {
+        init()
     })
 </script>

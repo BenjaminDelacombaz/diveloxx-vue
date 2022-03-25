@@ -17,14 +17,12 @@
             </span>
         </div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" v-if="!error && !isLoading">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" v-if="!error && diver && !isLoading">
         <DiveCardHome
             v-if="lastDive"
             :dive="lastDive"
             title="Last dive"
             imgSrc="/src/assets/img/sharks.jpg"
-            btnText="Not the last dive?"
-            v-on:btnClicked="newDive"
         />
         <DiveCardHome
             v-if="deepestDive"
@@ -48,7 +46,6 @@ import { XCircleIcon } from "@heroicons/vue/outline"
 import Loader from "../components/layout/Loader.vue"
 import { getDivesByDiver } from "../services/dive.service";
 
-const newDive = () => console.log('Go to new dive')
 const diver = inject('diver')
 const dives = reactive([])
 const lastDive = ref(null)
@@ -59,10 +56,12 @@ const error = ref(null)
 
 onMounted(async () => {
     try {
-        dives.push(...(await getDivesByDiver(diver.value.id)))
-        lastDive.value = dives.sort((a,b) => b.date - a.date)[0]
-        deepestDive.value = dives.sort((a,b) => b.depth - a.depth)[0]
-        longestDive.value = dives.sort((a,b) => b.duration - a.duration)[0]
+        if (diver.value) {
+            dives.push(...(await getDivesByDiver(diver.value.id)))
+            lastDive.value = dives.sort((a,b) => b.date - a.date)[0]
+            deepestDive.value = dives.sort((a,b) => b.depth - a.depth)[0]
+            longestDive.value = dives.sort((a,b) => b.duration - a.duration)[0]
+        }
     } catch(e) {
         console.error(e)
         error.value = 'An error occurred while retrieving the dives'
