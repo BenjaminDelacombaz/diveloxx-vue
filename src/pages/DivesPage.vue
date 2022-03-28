@@ -122,5 +122,5 @@ const doDeleteDive = async (dive) => {
         error.value = 'An error occurred while deleting the dive'
     }
 }
-const sortedDives = (array) => dives.sort((a,b) => b.date - a.date)
+const sortedDives = (array) => array.sort((a,b) => b.date - a.date)
 </script>
