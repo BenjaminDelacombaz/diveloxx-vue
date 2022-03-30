@@ -94,8 +94,7 @@
         modalId: String,
     })
     const emit = defineEmits(['dive-site-added', 'dive-site-updated'])
-    const diver = inject('diver')
-    const user = inject('user')
+    const auth = inject('auth')
     const diveSite = ref(null)
     const state = reactive({
         name: '',
@@ -132,14 +131,14 @@
                 } else {
                     let createdDiveSite = await createDiveSite({
                         ...toRaw(state),
-                        diver_id: diver.value.id
+                        diver_id: auth.value.diver.id
                     })
                     diveSite.value = DiveSite.fromFormState(
                         createdDiveSite.id,
-                        diver.value.id,
+                        auth.value.diver.id,
                         state
                     )
-                    diveSite.value.diver = diver.value 
+                    diveSite.value.diver = auth.value.diver
                     emit('dive-site-added', diveSite.value)
                 }
                 diveSite.value = null

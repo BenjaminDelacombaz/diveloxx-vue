@@ -17,14 +17,14 @@
         <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
             <div class="card shadow-2xl" v-for="diver in divers" :key="diver.id">
                 <div class="card-body items-center text-center">
-                    <h2 class="card-title">{{ diver.anonymizedName }} <span v-if="currentDiver.uid == diver.uid">(me)</span></h2>
+                    <h2 class="card-title">{{ diver.anonymizedName }} <span v-if="auth.diver.uid == diver.uid">(me)</span></h2>
                 </div>
                 <div class="flex mb-2 mx-4 items-end">
                     <div class="flex-none">
-                        <button v-if="diver.canEdit(currentDiver.id, currentDiver.uid)" class="btn btn-sm btn-square btn-primary mr-1" @click="editDiver(diver)">
+                        <button v-if="diver.canEdit(auth.diver.id, auth.diver.uid)" class="btn btn-sm btn-square btn-primary mr-1" @click="editDiver(diver)">
                             <PencilIcon class="h-5 w-5" />
                         </button>
-                        <button v-if="diver.canDelete(currentDiver.id)" class="btn btn-sm btn-square btn-primary btn-outline" @click="openDeleteDiverModal(diver)">
+                        <button v-if="diver.canDelete(auth.diver.id)" class="btn btn-sm btn-square btn-primary btn-outline" @click="openDeleteDiverModal(diver)">
                             <TrashIcon class="h-5 w-5" />
                         </button>
                     </div>
@@ -53,7 +53,7 @@ import { deleteDiver, getDivers } from '../services/diver.service';
 import EditDiverModal from '../components/EditDiverModal.vue'
 import DeleteModal from '../components/DeleteModal.vue';
 
-const currentDiver = inject('diver')
+const auth = inject('auth')
 const divers = reactive([])
 const error = ref(null)
 const isLoading = ref(true)

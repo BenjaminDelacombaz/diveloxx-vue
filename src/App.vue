@@ -13,5 +13,5 @@
 </template>
 
 <script setup>
-    import Nav from './components/layout/Nav.vue'
+import Nav from './components/layout/Nav.vue'
 </script>

@@ -48,10 +48,10 @@
                 </div>
                 <div class="flex mb-2 mx-4 items-end">
                     <div class="flex-none">
-                        <button v-if="dive.canEdit(diver.id)" class="btn btn-sm btn-square btn-primary mr-1" @click="editDive(dive)">
+                        <button v-if="dive.canEdit(auth.diver.id)" class="btn btn-sm btn-square btn-primary mr-1" @click="editDive(dive)">
                             <PencilIcon class="h-5 w-5" />
                         </button>
-                        <button v-if="dive.canDelete(diver.id)" class="btn btn-sm btn-square btn-primary btn-outline" @click="openDeleteDiveModal(dive)">
+                        <button v-if="dive.canDelete(auth.diver.id)" class="btn btn-sm btn-square btn-primary btn-outline" @click="openDeleteDiveModal(dive)">
                             <TrashIcon class="h-5 w-5" />
                         </button>
                     </div>
@@ -88,7 +88,7 @@ import EditDiveModal from '../components/EditDiveModal.vue'
 import DeleteModal from '../components/DeleteModal.vue'
 import { deleteDive, getDivesByDiver } from '../services/dive.service'
 
-const diver = inject('diver')
+const auth = inject('auth')
 const dives = reactive([])
 const tags = reactive([])
 const error = ref(null)
@@ -98,7 +98,7 @@ const deleteDiveModal = ref(null)
 
 onMounted(async () => {
     try {
-        dives.push(...(await getDivesByDiver(diver.value.id)))
+        dives.push(...(await getDivesByDiver(auth.value.diver.id)))
         tags.push(...new Set(dives.flatMap(dive => dive.tags ?? [])))
     } catch(e) {
         console.error(e)

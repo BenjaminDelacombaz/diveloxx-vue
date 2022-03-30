@@ -51,24 +51,21 @@
 
 <script setup>
     import { ref, inject } from 'vue'
-    import { getCurrentUser, signIn } from '../services/auth.service.js'
+    import { signIn } from '../services/auth.service.js'
     import { useRouter } from 'vue-router'
     import { XCircleIcon } from "@heroicons/vue/outline"
     import { getMessageFromCode } from '../tools/errors'
-    import { getDiver } from '../services/diver.service.js'
 
     const router = useRouter()
     const email = ref('')
     const password = ref('')
     const error = ref(null)
-    const user = inject('user')
-    const diver = inject('diver')
+    const auth = inject('auth')
 
     const login = async () => {
         try {
             await signIn(email.value, password.value)
-            user.value = await getCurrentUser()
-            diver.value = await getDiver(user.value.uid)
+            await auth.value.init()
             router.push({ name: 'Home' })
         } catch (e) {
             error.value = e

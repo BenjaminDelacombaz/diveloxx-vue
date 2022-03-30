@@ -66,8 +66,7 @@
         modalId: String,
     })
     const emit = defineEmits(['diver-added', 'diver-updated'])
-    const currentDiver = inject('diver')
-    const user = inject('user')
+    const auth = inject('auth')
     const diver = ref(null)
     const ownDiver = ref(false)
     const state = reactive({
@@ -96,13 +95,10 @@
                 if (diver.value) {
                     await updateDiver(diver.value.id, toRaw(state))
                     diver.value.updateFromFormState(state)
-                    if (currentDiver.value.uid == diver.value.uid) {
-                        currentDiver.value = diver.value
-                    }
                     emit('diver-updated', diver.value)
                 } else {
-                    let diverId = ownDiver.value ? null : currentDiver.value.id
-                    let uid = ownDiver.value ? user.value.uid : null
+                    let diverId = ownDiver.value ? null : auth.value.diver.id
+                    let uid = ownDiver.value ? auth.value.user.uid : null
                     let createdDiver = await createDiver(toRaw(state), diverId, uid)
                     diver.value = Diver.fromFormState(
                         createdDiver.id,
@@ -112,7 +108,7 @@
                     )
                     diver.value.diver = diver.value
                     if (ownDiver.value) {
-                        currentDiver.value = diver.value
+                        auth.value.refreshDiver()
                     }
                     emit('diver-added', diver.value)
                 }

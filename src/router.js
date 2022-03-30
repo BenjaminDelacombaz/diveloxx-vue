@@ -93,16 +93,16 @@ let router = VueRouter.createRouter({
     routes,
 })
 
-const initGuard = (router, user, diver) => {
+const initGuard = (router, auth) => {
     router.beforeEach(async (to, from, next) => {
         const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
         const requiresDiver = to.matched.some(record => record.meta.requiresDiver);
 
-        if (requiresAuth && !user.value) {
+        if (requiresAuth && !auth.value.isAuth) {
             next({ name: 'Login' })
         }
         else {
-            if (requiresDiver && !diver.value) {
+            if (requiresDiver && !auth.value.hasDiver) {
                 next({ name: 'MyDiver' })
             } else {
                 next()

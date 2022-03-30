@@ -22,12 +22,10 @@ import { signOut } from '../services/auth.service';
 
 const router = useRouter()
 const counter = ref(5);
-const user = inject('user')
-const diver = inject('diver')
+const auth = inject('auth')
 let interval = null
 
-user.value = null
-diver.value = null
+auth.value.destroy()
 signOut().then(() => {
     interval = setInterval(() => {
         counter.value--

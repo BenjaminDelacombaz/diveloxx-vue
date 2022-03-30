@@ -12,9 +12,9 @@
         <div class="card shadow-2xl">
             <div class="card-body items-center center-text">
                 <h2 class="card-title">
-                    {{ diver?.fullname ?? 'No diver? create one' }}
+                    {{ auth.diver?.fullname ?? 'No diver? create one' }}
                 </h2>
-                <div>{{ user.email }}</div>
+                <div>{{ auth.user.email }}</div>
                 <div class="justify-center card-actions mt-4">
                     <button @click="editDiver()" class="btn btn-outline btn-primary">
                         Edit my diver
@@ -22,7 +22,7 @@
                 </div>
             </div>
         </div>
-        <div class="shadow-2xl stats" v-if="!isLoading && diver && dives">
+        <div class="shadow-2xl stats" v-if="!isLoading && auth.hasDiver && dives">
             <div class="stat place-items-center">
                 <div class="stat-title">Dives count</div>
                 <div class="stat-value">{{ dives.length }}</div>
@@ -51,19 +51,18 @@
     import Loader from '../components/layout/Loader.vue'
     import { XCircleIcon } from "@heroicons/vue/outline"
 
-    const user = inject('user')
-    const diver = inject('diver')
+    const auth = inject('auth')
     const dives = ref(null)
     const divesGroupedByYears = ref(null)
     const editDiverModal = ref(null)
     const isLoading = ref(true)
     const error = ref(null)
 
-    const editDiver = () => editDiverModal.value.open(diver.value, true)
+    const editDiver = () => editDiverModal.value.open(auth.value.diver, true)
     const init = async () => {
         try {
-            if (diver.value) {
-                dives.value = (await getDivesByDiver(diver.value.id))
+            if (auth.value.diver) {
+                dives.value = (await getDivesByDiver(auth.value.diver.id))
                 divesGroupedByYears.value = getDivesGroupedPerYear(dives.value)
             }
         } catch (e) {

@@ -8,7 +8,7 @@
     <div class="center-items">
         <Loader v-if="isLoading" />
     </div>
-    <div class="alert shadow-lg alert-warning mb-6" v-if="!diver">
+    <div class="alert shadow-lg alert-warning mb-6" v-if="auth.hasDiver === false">
         <div>
             <XCircleIcon class="h-6 w-6" />
             <span>
@@ -17,7 +17,7 @@
             </span>
         </div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" v-if="!error && diver && !isLoading">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" v-if="!error && auth.hasDiver && !isLoading">
         <DiveCardHome
             v-if="lastDive"
             :dive="lastDive"
@@ -46,7 +46,7 @@ import { XCircleIcon } from "@heroicons/vue/outline"
 import Loader from "../components/layout/Loader.vue"
 import { getDivesByDiver } from "../services/dive.service";
 
-const diver = inject('diver')
+const auth = inject('auth')
 const dives = reactive([])
 const lastDive = ref(null)
 const deepestDive = ref(null)
@@ -56,8 +56,8 @@ const error = ref(null)
 
 onMounted(async () => {
     try {
-        if (diver.value) {
-            dives.push(...(await getDivesByDiver(diver.value.id)))
+        if (auth.value.diver) {
+            dives.push(...(await getDivesByDiver(auth.value.diver.id)))
             lastDive.value = dives.sort((a,b) => b.date - a.date)[0]
             deepestDive.value = dives.sort((a,b) => b.depth - a.depth)[0]
             longestDive.value = dives.sort((a,b) => b.duration - a.duration)[0]

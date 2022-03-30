@@ -23,16 +23,16 @@
             </router-link>
         </div>
         <div class="flex-none">
-            <div v-if="user" class="dropdown dropdown-end">
+            <div v-if="auth.user" class="dropdown dropdown-end">
                 <div tabindex="0" class="avatar placeholder">
                     <div class="bg-primary text-primary-content rounded-lg w-10 cursor-pointer">
-                        <UserIcon v-if="!diver" class="h-5 w-5" />
-                        <span v-if="diver">{{ diver.firstname.charAt(0) }}{{ diver.lastname.charAt(0) }}</span>
+                        <span v-if="auth.hasDiver">{{ auth.diver.firstname.charAt(0) }}{{ auth.diver.lastname.charAt(0) }}</span>
+                        <UserIcon v-else class="h-5 w-5" />
                     </div>
                 </div> 
                 <ul tabindex="0" class="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52 border-2">
                     <li class="menu-title">
-                        <span>{{ user.email }}</span>
+                        <span>{{ auth.user.email }}</span>
                     </li>
                     <li>
                         <router-link to="/my-diver" >My diver</router-link>
@@ -51,8 +51,7 @@
     import { MenuIcon, UserIcon } from "@heroicons/vue/solid"
     import { useRouter } from 'vue-router'
 
-    const user = inject('user')
-    const diver = inject('diver')
+    const auth = inject('auth')
     const router = useRouter()
     const links = [
         {

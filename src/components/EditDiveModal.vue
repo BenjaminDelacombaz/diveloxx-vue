@@ -189,7 +189,7 @@ const props = defineProps({
     tags: Array,
 })
 const emit = defineEmits(['dive-added', 'dive-updated'])
-const diver = inject('diver')
+const auth = inject('auth')
 const dive = ref(null)
 const diveSites = reactive([])
 const divers = reactive([])
@@ -241,11 +241,11 @@ const save = async () => {
             } else {
                 let createdDive = await createDive({
                     ...toRaw(state),
-                    diver_id: diver.value.id
+                    diver_id: auth.value.diver.id
                 })
                 dive.value = Dive.fromFormState(
                     createdDive.id,
-                    diver.value.id,
+                    auth.value.diver.id,
                     state
                 )
                 dive.value.fill(divers, diveSites)

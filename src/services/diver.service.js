@@ -1,4 +1,4 @@
-import { doc, getFirestore, updateDoc, documentId, query, collection, where, getDocs, limitToLast, addDoc, deleteDoc } from "firebase/firestore";
+import { doc, getFirestore, updateDoc, documentId, query, collection, where, getDocs, limitToLast, addDoc, deleteDoc, onSnapshot } from "firebase/firestore";
 import { Diver } from "../models/diver.model";
 
 const getDiverRef = (id) => doc(getFirestore(), "divers", id)
@@ -77,4 +77,17 @@ const getDivers = async () => {
 
 const deleteDiver = (id) => deleteDoc(getDiverRef(id))
 
-export { getDiver, updateDiver, createDiver, getDiversById, getDivers, getDiversByUid, deleteDiver }
+
+const subscribeDiver = (id = null, uid = null, withDiver = false, onEnd = () => {}) => {
+    const q = query(getDiversRef(), where('uid', '==', uid), limitToLast())
+    return onSnapshot(q, (querySnapshot) => {
+        let diver = null
+        if (!querySnapshot.empty) {
+            const docSnap = querySnapshot.docs[0]
+            diver = new Diver(docSnap.id, docSnap.data().firstname, docSnap.data().lastname, docSnap.data().diver_id, docSnap.data().uid)
+        }
+        onEnd(diver)
+    });
+}
+
+export { getDiver, updateDiver, createDiver, getDiversById, getDivers, getDiversByUid, deleteDiver, subscribeDiver }

@@ -23,10 +23,10 @@
                 </div>
                 <div class="flex mb-2 mx-4 items-end">
                     <div class="flex-none">
-                        <button v-if="diveSite.canEdit(diver.id)" class="btn btn-sm btn-square btn-primary mr-1" @click="editDiveSite(diveSite)">
+                        <button v-if="diveSite.canEdit(auth.diver.id)" class="btn btn-sm btn-square btn-primary mr-1" @click="editDiveSite(diveSite)">
                             <PencilIcon class="h-5 w-5" />
                         </button>
-                        <button v-if="diveSite.canDelete(diver.id)" class="btn btn-sm btn-square btn-primary btn-outline" @click="openDeleteDiveSiteModal(diveSite)">
+                        <button v-if="diveSite.canDelete(auth.diver.id)" class="btn btn-sm btn-square btn-primary btn-outline" @click="openDeleteDiveSiteModal(diveSite)">
                             <TrashIcon class="h-5 w-5" />
                         </button>
                     </div>
@@ -56,7 +56,7 @@ import EditDiveSiteModal from '../components/dive_site/EditDiveSiteModal.vue'
 import DeleteModal from '../components/DeleteModal.vue'
 import { deleteDiveSite } from '../services/dive_site.service'
 
-const diver = inject('diver')
+const auth = inject('auth')
 const diveSites = reactive([])
 const error = ref(null)
 const isLoading = ref(true)
