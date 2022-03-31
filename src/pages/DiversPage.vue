@@ -36,7 +36,6 @@
     <EditDiverModal 
         ref="editDiverModal"
         modalId="edit-diver-modal"
-        v-on:diver-added="diverAdded"
     />
     <DeleteModal
         ref="deleteDiverModal"
@@ -46,10 +45,10 @@
     />
 </template>
 <script setup>
-import { inject, onMounted, reactive, ref } from 'vue'
+import { inject, onMounted, onUnmounted, reactive, ref } from 'vue'
 import { XCircleIcon, PencilIcon, TrashIcon } from "@heroicons/vue/outline"
 import Loader from "../components/layout/Loader.vue"
-import { deleteDiver, getDivers } from '../services/diver.service';
+import { deleteDiver, getDivers, subscribeDivers } from '../services/diver.service';
 import EditDiverModal from '../components/EditDiverModal.vue'
 import DeleteModal from '../components/DeleteModal.vue';
 
@@ -59,17 +58,13 @@ const error = ref(null)
 const isLoading = ref(true)
 const editDiverModal = ref(null)
 const deleteDiverModal = ref(null)
+let unsubscribeDivers = () => {}
 
 const editDiver = (diver) => editDiverModal.value.open(diver)
-const diverAdded = (diver) => divers.push(diver)
 const openDeleteDiverModal = (diver) => deleteDiverModal.value.open(diver, `Delete ${diver.fullname} diver`)
 const doDeleteDiver = async (diver) => {
     try {
         await deleteDiver(diver.id)
-        let i = divers.indexOf(diver)
-        if (i >= 0) {
-            divers.splice(i, 1)
-        }
     } catch (e) {
         console.error(e)
         error.value = 'An error occurred while deleting the diver'
@@ -78,11 +73,16 @@ const doDeleteDiver = async (diver) => {
 
 onMounted(async () => {
     try {
-        divers.push(...(await getDivers()))
+        unsubscribeDivers = subscribeDivers(() => {
+            isLoading.value = false
+        }, divers)
     } catch(e) {
         console.error(e)
         error.value = 'An error occurred while retrieving the divers'
+        isLoading.value = false
     }
-    isLoading.value = false
+})
+onUnmounted(() => {
+    unsubscribeDivers()
 })
 </script>

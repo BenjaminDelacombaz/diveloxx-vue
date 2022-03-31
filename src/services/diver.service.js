@@ -1,4 +1,5 @@
 import { doc, getFirestore, updateDoc, documentId, query, collection, where, getDocs, limitToLast, addDoc, deleteDoc, onSnapshot } from "firebase/firestore";
+import { inject } from "vue";
 import { Diver } from "../models/diver.model";
 
 const getDiverRef = (id) => doc(getFirestore(), "divers", id)
@@ -90,4 +91,42 @@ const subscribeDiver = (id = null, uid = null, onEnd = () => {}) => {
     });
 }
 
-export { getDiver, updateDiver, createDiver, getDiversById, getDivers, getDiversByUid, deleteDiver, subscribeDiver }
+const subscribeDivers = (callback, divers) => {
+    const auth = inject('auth')
+    return onSnapshot(getDiversRef(), (querySnapshot) => {
+        querySnapshot.docChanges().forEach((change) => { 
+            const doc = change.doc
+            if (change.type == 'added') {
+                divers.push(new Diver(doc.id, doc.data().firstname, doc.data().lastname, doc.data().diver_id, doc.data().uid))
+            }
+            if (change.type == 'modified') {
+                const diver = divers.find(d => d.id == doc.id)
+                diver.firstname = doc.data().firstname
+                diver.lastname = doc.data().lastname
+                diver.diver_id = doc.data().diver_id
+                diver.uid = doc.data().uid
+            }
+            if (change.type == 'removed') {
+                const i = divers.findIndex(d => d.id == doc.id)
+                divers.splice(i, 1)
+            }
+        })
+        // Set diver without recall data
+        for (const diver of divers) {
+            let diverToAdd = null
+            if (diver.diver_id == auth.value.diver.id) {
+                diverToAdd = auth.value.diver
+            } else if (diver.diver_id) {
+                diverToAdd = divers.find(d => d.id == diver.diver_id)
+            } else {
+                diverToAdd = diver
+            }
+            // Prevent loop attribute on diver.diver
+            diverToAdd = diverToAdd ? new Diver(diverToAdd.id, diverToAdd.firstname, diverToAdd.lastname, diverToAdd.diver_id, diverToAdd.uid) : null
+            diver.diver = diverToAdd
+        }
+        callback()
+    })
+}
+
+export { getDiver, updateDiver, createDiver, getDiversById, getDivers, getDiversByUid, deleteDiver, subscribeDiver, subscribeDivers }
