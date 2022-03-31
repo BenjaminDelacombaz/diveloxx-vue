@@ -78,7 +78,7 @@ const getDivers = async () => {
 const deleteDiver = (id) => deleteDoc(getDiverRef(id))
 
 
-const subscribeDiver = (id = null, uid = null, withDiver = false, onEnd = () => {}) => {
+const subscribeDiver = (id = null, uid = null, onEnd = () => {}) => {
     const q = query(getDiversRef(), where('uid', '==', uid), limitToLast())
     return onSnapshot(q, (querySnapshot) => {
         let diver = null

@@ -11,7 +11,7 @@ export class Auth {
         return new Promise(async (resolve, reject) => {
             this.user = await getCurrentUser()
             if (this.user) {
-                this.unsubscribeDiver = subscribeDiver(null, this.user.uid, false, (d) => { 
+                this.unsubscribeDiver = subscribeDiver(null, this.user.uid, (d) => { 
                     this.diver = d
                     this.hasDiver = !!d
                     resolve()
@@ -25,7 +25,7 @@ export class Auth {
 
     refreshDiver() {
         this.unsubscribeDiver()
-        this.unsubscribeDiver = subscribeDiver(null, this.user.uid, false, (d) => { 
+        this.unsubscribeDiver = subscribeDiver(null, this.user.uid, (d) => { 
             this.diver = d
             this.hasDiver = !!d
         })
