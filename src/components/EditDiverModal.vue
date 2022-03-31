@@ -106,7 +106,7 @@
                         uid,
                         state
                     )
-                    diver.value.diver = diver.value
+                    diver.value.diver = auth.value.diver
                     if (ownDiver.value) {
                         auth.value.refreshDiver()
                     }
