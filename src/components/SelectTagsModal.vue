@@ -4,6 +4,14 @@
         <div class="modal-box">
             <h3 class="font-bold text-lg">Select tags</h3>
             <div>
+                <div class="form-control">
+                    <div class="input-group">
+                        <input type="text" placeholder="Tag name" v-model="newTag" class="input input-bordered w-full">
+                        <button class="btn btn-square btn-success" @click="addTag">
+                            <PlusIcon class="w-5 h-5" />
+                        </button>
+                    </div>
+                </div>
                 <div class="flex flex-wrap h-96 gap-4 overflow-auto p-4">
                     <div 
                         class="card shadow-xl flex-shrink-0 flex-grow w-full md:w-1/3 bg-success"
@@ -34,12 +42,14 @@
 </template>
 <script setup>
 import { reactive, ref, watch } from 'vue'
+import { PlusIcon } from "@heroicons/vue/outline"
 
 const props = defineProps({
     modalId: String,
     tags: Array,
     initialTags: Array,
 })
+const newTag = ref('')
 const unselectedTags = reactive([])
 const selectedTags = reactive([])
 const emit = defineEmits(['tags-updated'])
@@ -51,6 +61,9 @@ const sortedTags = (array) => {
         let fb = b.toLowerCase()
         return (fa < fb) ? -1 : (fa > fb) ? 1 : 0
     })
+}
+const addTag = () => {
+    selectedTags.push(newTag.value)
 }
 const selectTag = (tag) => {
     let selectedIndex = selectedTags.indexOf(tag)
@@ -74,7 +87,11 @@ const init = () => {
     if (props.initialTags) {
         for (const tag of props.initialTags) {
             let tagToSelect = unselectedTags.find(t => t == tag)
-            if (tagToSelect) selectTag(tagToSelect)
+            if (tagToSelect) {
+                selectTag(tagToSelect)
+            } else {
+                selectedTags.push(tag)
+            }
         }
     }
 }
