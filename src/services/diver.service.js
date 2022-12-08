@@ -1,4 +1,4 @@
-import { doc, getFirestore, updateDoc, documentId, query, collection, where, getDocs, limitToLast, addDoc, deleteDoc, onSnapshot } from "firebase/firestore";
+import { doc, getFirestore, updateDoc, documentId, query, collection, where, getDocs, addDoc, deleteDoc, onSnapshot, limit } from "firebase/firestore";
 import { inject } from "vue";
 import { Diver } from "../models/diver.model";
 
@@ -6,7 +6,7 @@ const getDiverRef = (id) => doc(getFirestore(), "divers", id)
 const getDiversRef = () => collection(getFirestore(), "divers")
 
 const getDiver = async (uid) => {
-    const q = query(getDiversRef(), where('uid', '==', uid), limitToLast())
+    const q = query(getDiversRef(), where('uid', '==', uid), limit(1))
     const querySnapshot = await getDocs(q)
     if (!querySnapshot.empty) {
         const docSnap = querySnapshot.docs[0]
@@ -80,7 +80,7 @@ const deleteDiver = (id) => deleteDoc(getDiverRef(id))
 
 
 const subscribeDiver = (id = null, uid = null, onEnd = () => {}) => {
-    const q = query(getDiversRef(), where('uid', '==', uid), limitToLast())
+    const q = query(getDiversRef(), where('uid', '==', uid), limit(1))
     return onSnapshot(q, (querySnapshot) => {
         let diver = null
         if (!querySnapshot.empty) {

@@ -19,7 +19,7 @@
                 <div class="flex justify-between mx-4 mt-4">
                     <div><div class="badge badge-sm badge-primary">{{ dives.length - i }}</div></div>
                     <div>
-                        <div class="badge badge-sm badge-primary mr-1" v-for="tags in dive.tags">{{ tags }}</div>
+                        <div class="badge badge-sm badge-primary mr-1" v-for="tags in dive.tags" :key="tags">{{ tags }}</div>
                     </div>
                 </div>
                 <div class="card-body items-center text-center py-2">
@@ -27,7 +27,7 @@
                     <p class="text-sm text-gray-400">{{ dive.dateAsString }}</p>
                     <div class="text-left">
                         <div class="flex items-center">
-                            <LocationMarkerIcon class="w-6 h-6 mr-2" />
+                            <MapPinIcon class="w-6 h-6 mr-2" />
                             <span>{{ dive.dive_site.name }}</span>
                         </div>
                         <div class="flex items-center mt-2">
@@ -36,7 +36,7 @@
                             <span v-else>Solo</span>
                         </div>
                         <div class="flex items-center mt-2">
-                            <ArrowCircleDownIcon class="w-6 h-6 mr-2" />
+                            <ArrowDownCircleIcon class="w-6 h-6 mr-2" />
                             <span>{{ dive.depth }} m</span>
                         </div>
                         <div class="flex items-center mt-2">
@@ -78,11 +78,11 @@ import {
     XCircleIcon,
     PencilIcon,
     TrashIcon,
-    LocationMarkerIcon,
-    ArrowCircleDownIcon,
+    MapPinIcon,
+    ArrowDownCircleIcon,
     ClockIcon,
     UsersIcon,
-} from "@heroicons/vue/outline"
+} from "@heroicons/vue/24/outline"
 import Loader from "../components/layout/Loader.vue"
 import EditDiveModal from '../components/EditDiveModal.vue'
 import DeleteModal from '../components/DeleteModal.vue'

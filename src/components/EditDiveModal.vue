@@ -175,7 +175,7 @@
 import { reactive, ref, inject, toRaw, watch, onMounted } from 'vue'
 import useVuelidate from '@vuelidate/core'
 import { required, numeric, minValue, maxValue } from '@vuelidate/validators'
-import { XCircleIcon } from "@heroicons/vue/outline"
+import { XCircleIcon } from "@heroicons/vue/24/outline"
 import { getDiveSites } from '../services/dive_site.service'
 import { getDivers } from '../services/diver.service'
 import { createDive, updateDive } from '../services/dive.service'

@@ -42,7 +42,7 @@
 </template>
 <script setup>
 import { reactive, ref, watch } from 'vue'
-import { PlusIcon } from "@heroicons/vue/outline"
+import { PlusIcon } from "@heroicons/vue/24/outline"
 
 const props = defineProps({
     modalId: String,

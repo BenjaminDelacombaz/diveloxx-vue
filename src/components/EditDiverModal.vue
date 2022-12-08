@@ -58,7 +58,7 @@
     import { reactive, ref, inject, toRaw, watch } from 'vue'
     import useVuelidate from '@vuelidate/core'
     import { required, minLength, maxLength } from '@vuelidate/validators'
-    import { XCircleIcon } from "@heroicons/vue/outline"
+    import { XCircleIcon } from "@heroicons/vue/24/outline"
     import { Diver } from '../models/diver.model'    
     import { createDiver, updateDiver } from '../services/diver.service'
 

@@ -100,7 +100,7 @@
     import { createUser } from '../services/auth.service.js'
     import { useRouter } from 'vue-router'
     import { getMessageFromCode } from '../tools/errors'
-    import { XCircleIcon } from "@heroicons/vue/outline"
+    import { XCircleIcon } from "@heroicons/vue/24/outline"
 
     const router = useRouter()
     const state = reactive({

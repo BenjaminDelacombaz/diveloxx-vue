@@ -19,7 +19,7 @@
 </template>
 <script setup>
 import { onMounted, ref, watch } from 'vue'
-import { XCircleIcon } from "@heroicons/vue/outline"
+import { XCircleIcon } from "@heroicons/vue/24/solid"
 
 
 const props = defineProps({

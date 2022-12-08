@@ -42,7 +42,7 @@
 <script setup>
 import DiveCardHome from "../components/DiveCardHome.vue";
 import { inject, onMounted, reactive, ref } from 'vue';
-import { XCircleIcon } from "@heroicons/vue/outline"
+import { XCircleIcon } from "@heroicons/vue/24/outline"
 import Loader from "../components/layout/Loader.vue"
 import { getDivesByDiver } from "../services/dive.service";
 

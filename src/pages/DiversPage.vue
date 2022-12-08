@@ -46,7 +46,7 @@
 </template>
 <script setup>
 import { inject, onMounted, onUnmounted, reactive, ref } from 'vue'
-import { XCircleIcon, PencilIcon, TrashIcon } from "@heroicons/vue/outline"
+import { XCircleIcon, PencilIcon, TrashIcon } from "@heroicons/vue/24/outline"
 import Loader from "../components/layout/Loader.vue"
 import { deleteDiver, getDivers, subscribeDivers } from '../services/diver.service';
 import EditDiverModal from '../components/EditDiverModal.vue'

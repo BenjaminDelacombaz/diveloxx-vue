@@ -53,7 +53,7 @@
     import { ref, inject } from 'vue'
     import { signIn } from '../services/auth.service.js'
     import { useRouter } from 'vue-router'
-    import { XCircleIcon } from "@heroicons/vue/outline"
+    import { XCircleIcon } from "@heroicons/vue/24/outline"
     import { getMessageFromCode } from '../tools/errors'
 
     const router = useRouter()

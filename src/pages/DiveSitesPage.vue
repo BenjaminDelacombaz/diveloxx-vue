@@ -50,7 +50,7 @@
 <script setup>
 import { inject, onMounted, reactive, ref } from 'vue';
 import { getDiveSites } from '../services/dive_site.service'
-import { XCircleIcon, PencilIcon, TrashIcon } from "@heroicons/vue/outline"
+import { XCircleIcon, PencilIcon, TrashIcon } from "@heroicons/vue/24/outline"
 import Loader from "../components/layout/Loader.vue"
 import EditDiveSiteModal from '../components/dive_site/EditDiveSiteModal.vue'
 import DeleteModal from '../components/DeleteModal.vue'

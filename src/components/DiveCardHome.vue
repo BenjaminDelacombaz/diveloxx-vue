@@ -9,7 +9,7 @@
             </h2>
             <div class="grid grid-cols-2 gap-2">
                 <div class="flex">
-                    <LocationMarkerIcon class="w-6 h-6 mr-2" />
+                    <MapPinIcon class="w-6 h-6 mr-2" />
                     <span>{{ dive.dive_site.name }}</span>
                 </div>
                 <div class="flex">
@@ -17,7 +17,7 @@
                     <span>{{ dive.getDiversAsString(true) }}</span>
                 </div>
                 <div class="flex">
-                    <ArrowCircleDownIcon class="w-6 h-6 mr-2" />
+                    <ArrowDownCircleIcon class="w-6 h-6 mr-2" />
                     <span>{{ dive.depth }} m</span>
                 </div>
                 <div class="flex">
@@ -37,11 +37,11 @@
 <script setup>
 import { Dive } from '../models/dive.model';
 import {
-    LocationMarkerIcon,
-    ArrowCircleDownIcon,
+    MapPinIcon,
+    ArrowDownCircleIcon,
     ClockIcon,
     UsersIcon,
-} from "@heroicons/vue/outline"
+} from "@heroicons/vue/24/outline"
 
 const props = defineProps({
     dive: Dive,

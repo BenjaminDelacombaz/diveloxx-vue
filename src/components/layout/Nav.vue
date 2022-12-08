@@ -3,7 +3,7 @@
         <div class="flex sm:hidden">
             <div class="dropdown">
                 <div tabindex="0" class="btn btn-square btn-ghost">
-                    <MenuIcon class="h-6 w-6" />
+                    <Bars3Icon class="h-6 w-6" />
                 </div> 
                 <ul tabindex="0" class="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52 border-2">
                     <li v-for="link in links" :key="link.name">
@@ -48,7 +48,7 @@
 
 <script setup>
     import { inject } from 'vue'
-    import { MenuIcon, UserIcon } from "@heroicons/vue/solid"
+    import { Bars3Icon, UserIcon } from "@heroicons/vue/24/solid"
     import { useRouter } from 'vue-router'
 
     const auth = inject('auth')

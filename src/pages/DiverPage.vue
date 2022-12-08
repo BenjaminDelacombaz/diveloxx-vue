@@ -49,7 +49,7 @@
     import { getDivesByDiver, getDivesGroupedPerYear } from '../services/dive.service'
     import EditDiverModal from '../components/EditDiverModal.vue'
     import Loader from '../components/layout/Loader.vue'
-    import { XCircleIcon } from "@heroicons/vue/outline"
+    import { XCircleIcon } from "@heroicons/vue/24/outline"
 
     const auth = inject('auth')
     const dives = ref(null)
